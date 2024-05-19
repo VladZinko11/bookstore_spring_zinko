@@ -16,7 +16,8 @@
         <postgresql.version>42.7.3</postgresql.version>
         <lombok.version>1.18.32</lombok.version>
         <servlet.version>6.0.0</servlet.version>
-        <jakarta.servlet>3.0.0</jakarta.servlet>
+        <jakarta.version>3.0.0</jakarta.version>
+        <spring.version>6.1.5</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -44,7 +45,7 @@
         <dependency>
             <groupId>jakarta.servlet.jsp.jstl</groupId>
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>${jakarta.servlet}</version>
+            <version>${jakarta.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet.jsp</groupId>
@@ -54,7 +55,7 @@
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-            <version>${jakarta.servlet}</version>
+            <version>${jakarta.version}</version>
         </dependency>
 
         <dependency>
@@ -76,6 +77,12 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j2-impl</artifactId>
             <version>${log4j2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
     </dependencies>
