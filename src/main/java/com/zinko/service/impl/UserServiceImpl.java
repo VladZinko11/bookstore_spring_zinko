@@ -6,11 +6,13 @@ import com.zinko.service.UserService;
 import com.zinko.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
