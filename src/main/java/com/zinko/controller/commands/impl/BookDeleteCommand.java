@@ -2,7 +2,9 @@ package com.zinko.controller.commands.impl;
 
 import com.zinko.service.BookService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
+@Component(value = "book_delete")
 public class BookDeleteCommand extends AbstractBookCommand{
     public BookDeleteCommand(BookService bookService) {
         super(bookService);

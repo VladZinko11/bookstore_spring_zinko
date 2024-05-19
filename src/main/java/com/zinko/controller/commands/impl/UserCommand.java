@@ -2,7 +2,9 @@ package com.zinko.controller.commands.impl;
 
 import com.zinko.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
+@Component(value = "user")
 public class UserCommand extends AbstractUserCommand {
 
 

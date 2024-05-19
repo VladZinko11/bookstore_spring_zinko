@@ -4,9 +4,10 @@ import com.zinko.controller.commands.Command;
 import com.zinko.service.BookService;
 import com.zinko.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-
+@Component(value = "book_create")
 public class BookCreateCommand extends AbstractBookCommand {
     public BookCreateCommand(BookService bookService) {
         super(bookService);
