@@ -44,10 +44,10 @@ public class CommandFactory {
         MyConnectionManager myConnectionManager = context.getBean(MyConnectionManager.class);
         resources.add(myConnectionManager);
 
-        BookDao bookDao = new BookDaoImpl(myConnectionManager);
+        BookDao bookDao = context.getBean(BookDao.class);
         UserDao userDao = new UserDaoImpl(myConnectionManager);
 
-        BookService bookService = new BookServiceImpl(bookDao);
+        BookService bookService = context.getBean(BookService.class);
         UserService userService = new UserServiceImpl(userDao);
 
         commands.put("books", new BooksCommand(bookService));
