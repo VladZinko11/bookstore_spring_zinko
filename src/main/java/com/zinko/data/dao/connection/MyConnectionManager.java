@@ -7,5 +7,4 @@ public interface MyConnectionManager extends Closeable {
 
     Connection getConnection();
 
-    void setPoolSize(int poolSize);
 }
