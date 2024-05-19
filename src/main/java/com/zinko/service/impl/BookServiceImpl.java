@@ -6,11 +6,13 @@ import com.zinko.service.BookService;
 import com.zinko.service.dto.BookDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class BookServiceImpl implements BookService {
     final BookDao bookDao;
 
