@@ -2,6 +2,7 @@ package com.zinko.controller;
 
 import com.zinko.AppContext;
 import com.zinko.controller.commands.Command;
+import com.zinko.exception.MyRuntimeException;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -41,9 +42,11 @@ public class Controller extends HttpServlet {
             String page = commandInstance.execute(req);
             log.debug(page);
             req.getRequestDispatcher(page).forward(req, resp);
-        } catch (RuntimeException e) {
+        } catch (MyRuntimeException e) {
             log.error(e.getMessage(), e);
             req.setAttribute("message", e.getMessage());
+            if(e.getStatus()!=null) {
+            resp.setStatus(e.getStatus());}
             req.getRequestDispatcher("jsp/exception.jsp").forward(req, resp);
         }
     }

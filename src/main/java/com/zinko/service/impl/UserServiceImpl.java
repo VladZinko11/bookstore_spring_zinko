@@ -2,6 +2,7 @@ package com.zinko.service.impl;
 
 import com.zinko.data.dao.UserDao;
 import com.zinko.data.dao.entity.User;
+import com.zinko.exception.MyRuntimeException;
 import com.zinko.service.UserService;
 import com.zinko.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAll() {
         log.debug("UserService method findAll call");
         List<UserDto> list = userDao.findAll().stream().map(this::toDto).toList();
-        if (list.isEmpty()) throw new RuntimeException("No registered users");
+        if (list.isEmpty()) throw new MyRuntimeException("No registered users");
         return list;
     }
 
@@ -55,14 +56,14 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findById(id);
         if (user != null)
             return toDto(user);
-        else throw new RuntimeException("User with id: " + id + " not exist");
+        else throw new MyRuntimeException("User with id: " + id + " not exist", 404);
     }
 
     @Override
     public UserDto create(UserDto userDto) {
         log.debug("UserService method create call {}", userDto);
         if ((userDao.findByEmail(userDto.getEmail())) != null)
-            throw new RuntimeException("User with email " + userDto.getEmail() + " already exist");
+            throw new MyRuntimeException("User with email " + userDto.getEmail() + " already exist");
         else return toDto(userDao.create(toUser(userDto)));
     }
 
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
             userDto.setRole(userBefore.getRole());
         User user;
         if ((user=userDao.findByEmail(userDto.getEmail()))!=null && !userBefore.equals(user))
-            throw new RuntimeException("User with email " + userDto.getEmail() + " is exist");
+            throw new MyRuntimeException("User with email " + userDto.getEmail() + " is exist");
         else {
             return toDto(userDao.update(toUser(userDto)));
         }
@@ -97,8 +98,8 @@ public class UserServiceImpl implements UserService {
     public UserDto login(String email, String password) {
         log.debug("UserService method login call with email {} and password {}", email, password);
         User user = userDao.findByEmail(email);
-        if (user == null) throw new RuntimeException("Not found user with email: " + email);
-        if (!user.getPassword().equals(password)) throw new RuntimeException("Wrong password");
+        if (user == null) throw new MyRuntimeException("Not found user with email: " + email);
+        if (!user.getPassword().equals(password)) throw new MyRuntimeException("Wrong password");
         else return toDto(user);
     }
 }
