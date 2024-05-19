@@ -1,0 +1,83 @@
+.table_list {
+    display: table;
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 50px;
+    }
+.table_list_row {
+    display: table-row;
+    text-decoration: none;
+    transition: all 1s ease;
+}
+a.table_list_row:active,
+a.table_list_row:visited {
+    text-decoration: none;
+    color: #000000;
+}
+a.table_list_row:hover {
+    background-color: lightslategray;
+    color: aliceblue;
+}
+.table_list_cell {
+    display: table-cell;
+    color: black;
+}
+
+.book {
+    display: grid;
+    width: 60%;
+    margin-top: 100px;
+    margin-left: 100px;
+}
+.book_name {
+    color: black;
+    font-size: 40px;
+}
+.book_isbn,
+.book_date {
+    font-size: 30px;
+}
+
+.user {
+    display: grid;
+    margin-top: 50px;
+    margin-left: 50px;
+    color: black;
+    font-size: 30px;
+}
+.user_name {
+    font-size: 50px;
+}
+.user_email {
+    color: royalblue;
+}
+
+.nav-bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+.nav-bar-a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.error {
+    display: grid;
+    text-align: center;
+    width: 60%;
+    margin-left: 20%;
+}
+.error_status {
+    font-size: 200px;
+}
+.main_page {
+    background: url('/images/img.png');
+    background-size: cover;
+}

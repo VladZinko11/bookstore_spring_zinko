@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Congiguration status="INFO">
+    <Properties>
+<!--        <property name="LoggerName"></property>-->
+        <property name="pattern_file">%d{yyyy-MM-dd HH:mm:ss} %-5level [%logger{15}:%L] - %msg%n</property>
+        <property name="pattern_console">%d{yyyy-MM-dd HH:mm:ss} %-5level [%logger{15}:%L] - %msg%n</property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern_console}"/>
+        </Console>
+        <File name="File" fileName="text.log" bufferedIO="true">
+            <PatternLayout pattern="${pattern_file}"/>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+<!--        <Logger name="${LoggerName}" level="error">-->
+<!--            <AppenderRef ref="Console"/>-->
+        <Root level="debug">
+            <AppenderRef ref="Console" level="debug"/>
+            <AppenderRef ref="File" level="info"/>
+        </Root>
+
+    </Loggers>
+
+</Congiguration>
