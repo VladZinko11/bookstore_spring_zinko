@@ -1,7 +1,7 @@
 package com.zinko.controller;
 
+import com.zinko.AppContext;
 import com.zinko.controller.commands.Command;
-import com.zinko.conf.CommandFactory;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,13 +9,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @Slf4j
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
-    private CommandFactory commandFactory;
+    private AnnotationConfigApplicationContext context;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +37,7 @@ public class Controller extends HttpServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String command = req.getParameter("command");
-            Command commandInstance = commandFactory.getCommand(command);
+            Command commandInstance = context.getBean(command, Command.class);
             log.debug(commandInstance.toString());
             String page = commandInstance.execute(req);
             log.debug(page);
@@ -49,13 +51,13 @@ public class Controller extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        commandFactory = CommandFactory.getInstance();
+        context = new AnnotationConfigApplicationContext(AppContext.class);
+        log.debug("Spring context init");
     }
 
     @Override
     public void destroy() {
-        if (commandFactory != null) {
-            commandFactory.shutdown();
-        }
+        context.close();
+        log.debug("Spring context destroy");
     }
 }
