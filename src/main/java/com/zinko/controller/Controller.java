@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @Slf4j
 @WebServlet("/controller")
@@ -50,7 +49,7 @@ public class Controller extends HttpServlet {
     }
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) {
         context = new AnnotationConfigApplicationContext(AppContext.class);
         log.debug("Spring context init");
     }
