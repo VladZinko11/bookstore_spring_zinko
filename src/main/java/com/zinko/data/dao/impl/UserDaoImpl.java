@@ -7,7 +7,7 @@ import com.zinko.data.dao.entity.enums.Role;
 import com.zinko.exception.MyRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-@Component
+@Repository
 public class UserDaoImpl implements UserDao {
     private final MyConnectionManager connectionManager;
     private static final int PARAMETER_INDEX_1 = 1;

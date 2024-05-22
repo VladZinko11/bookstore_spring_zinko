@@ -1,13 +1,12 @@
 package com.zinko.controller.commands.impl;
 
-import com.zinko.controller.commands.Command;
 import com.zinko.service.BookService;
 import com.zinko.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
-@Component(value = "book_create")
+@Controller("book_create")
 public class BookCreateCommand extends AbstractBookCommand {
     public BookCreateCommand(BookService bookService) {
         super(bookService);

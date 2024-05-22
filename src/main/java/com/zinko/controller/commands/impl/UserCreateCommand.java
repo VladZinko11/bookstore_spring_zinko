@@ -3,9 +3,9 @@ package com.zinko.controller.commands.impl;
 import com.zinko.service.UserService;
 import com.zinko.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component(value = "user_create")
+@Controller("user_create")
 public class UserCreateCommand extends AbstractUserCommand{
     public UserCreateCommand(UserService userService) {
         super(userService);

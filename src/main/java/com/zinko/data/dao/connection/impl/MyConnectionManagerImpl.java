@@ -5,14 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.sql.Connection;
 
 @Slf4j
 @Component
 public class MyConnectionManagerImpl implements MyConnectionManager {
 
-    private ConnectionPool connectionPool;
+    private final ConnectionPool connectionPool;
 
     @Autowired
     public MyConnectionManagerImpl(ConnectionPool connectionPool) {
@@ -21,7 +20,7 @@ public class MyConnectionManagerImpl implements MyConnectionManager {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         connectionPool.destroyPool();
     }
 

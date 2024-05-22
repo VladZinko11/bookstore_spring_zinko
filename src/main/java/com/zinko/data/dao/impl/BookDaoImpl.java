@@ -6,7 +6,7 @@ import com.zinko.data.dao.BookDao;
 import com.zinko.exception.MyRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+@Repository
 public class BookDaoImpl implements BookDao {
 
     private final MyConnectionManager myConnectionManager;

@@ -3,9 +3,9 @@ package com.zinko.controller.commands.impl;
 import com.zinko.service.UserService;
 import com.zinko.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component(value = "user_edit")
+@Controller("user_edit")
 public class UserEditCommand extends AbstractUserCommand{
     public UserEditCommand(UserService userService) {
         super(userService);

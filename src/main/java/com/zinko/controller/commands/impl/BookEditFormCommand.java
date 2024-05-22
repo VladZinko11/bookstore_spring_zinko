@@ -2,9 +2,9 @@ package com.zinko.controller.commands.impl;
 
 import com.zinko.service.BookService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component(value = "book_edit_form")
+@Controller("book_edit_form")
 public class BookEditFormCommand extends AbstractBookCommand {
     public BookEditFormCommand(BookService bookService) {
         super(bookService);

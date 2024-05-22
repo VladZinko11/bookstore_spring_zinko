@@ -2,9 +2,9 @@ package com.zinko.controller.commands.impl;
 
 import com.zinko.service.BookService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component(value = "books")
+@Controller("books")
 public class BooksCommand extends AbstractBookCommand {
 
     public BooksCommand(BookService bookService) {
