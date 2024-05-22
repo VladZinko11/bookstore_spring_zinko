@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Vlad
@@ -14,6 +15,11 @@
 </head>
 <body>
 <h1 class="error">
+    <c:if test="${pageContext.response.status!='200'}">
+        <div class="error_status">
+                ${pageContext.response.status}
+        </div>
+    </c:if>
     ${message.toString()}<br/>
 </h1>
 </body>

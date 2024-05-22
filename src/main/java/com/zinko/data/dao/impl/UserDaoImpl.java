@@ -4,8 +4,10 @@ import com.zinko.data.dao.UserDao;
 import com.zinko.data.dao.connection.MyConnectionManager;
 import com.zinko.data.dao.entity.User;
 import com.zinko.data.dao.entity.enums.Role;
+import com.zinko.exception.MyRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
+@Repository
 public class UserDaoImpl implements UserDao {
     private final MyConnectionManager connectionManager;
     private static final int PARAMETER_INDEX_1 = 1;
@@ -73,7 +76,7 @@ public class UserDaoImpl implements UserDao {
                 return findByEmail(user.getEmail());
             } else return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 
@@ -87,7 +90,7 @@ public class UserDaoImpl implements UserDao {
             if (resultSet.next()) return getUserFromResulSet(resultSet);
             else return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 
@@ -105,7 +108,7 @@ public class UserDaoImpl implements UserDao {
             if (list.isEmpty()) return null;
             else return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 
@@ -126,7 +129,7 @@ public class UserDaoImpl implements UserDao {
                 return findById(user.getId());
             } else return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 
@@ -141,7 +144,7 @@ public class UserDaoImpl implements UserDao {
                 return true;
             } else return false;
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 
@@ -155,7 +158,7 @@ public class UserDaoImpl implements UserDao {
             if (resultSet.next()) return getUserFromResulSet(resultSet);
             else return null;
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 
@@ -172,7 +175,7 @@ public class UserDaoImpl implements UserDao {
             }
             return list;
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 
@@ -184,7 +187,7 @@ public class UserDaoImpl implements UserDao {
             log.debug("a database access occurred");
             return resultSet.getLong(COLUMN_INDEX_1);
         } catch (SQLException e) {
-            throw new RuntimeException("Oops, something wrong on server", e);
+            throw new MyRuntimeException("Oops, something wrong on server", e, 500);
         }
     }
 }

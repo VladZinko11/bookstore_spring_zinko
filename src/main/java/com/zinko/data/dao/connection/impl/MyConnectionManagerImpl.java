@@ -2,45 +2,30 @@ package com.zinko.data.dao.connection.impl;
 
 import com.zinko.data.dao.connection.MyConnectionManager;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.sql.Connection;
 
 @Slf4j
+@Component
 public class MyConnectionManagerImpl implements MyConnectionManager {
 
-    private final String url;
-    private final String user;
-    private final String password;
-    private final String driver;
-    private ConnectionPool connectionPool;
-    private int poolSize = 16;
+    private final ConnectionPool connectionPool;
 
-    public MyConnectionManagerImpl(String url, String user, String password, String driver) {
-        this.url = url;
-        this.user = user;
-        this.password = password;
-        this.driver = driver;
-        connectionPool = new ConnectionPool(driver, url, user, password, poolSize);
+    @Autowired
+    public MyConnectionManagerImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
         log.info("Connection pool initialize");
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         connectionPool.destroyPool();
     }
 
     @Override
-    public void setPoolSize(int poolSize) {
-        this.poolSize = poolSize;
-    }
-
-    @Override
     public Connection getConnection() {
-        if(this.connectionPool==null) {
-            connectionPool = new ConnectionPool(driver, url, user, password, poolSize);
-            log.info("Connection pool initialized");
-        }
         log.info("Connection received");
         return connectionPool.getConnection();
     }

@@ -2,7 +2,9 @@ package com.zinko.controller.commands.impl;
 
 import com.zinko.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Controller;
 
+@Controller("user_create_form")
 public class UserCreateFormCommand extends AbstractUserCommand {
     public UserCreateFormCommand(UserService userService) {
         super(userService);

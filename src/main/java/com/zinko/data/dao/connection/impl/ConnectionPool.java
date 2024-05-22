@@ -1,6 +1,8 @@
 package com.zinko.data.dao.connection.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,11 +12,15 @@ import java.util.Queue;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 @Slf4j
+@Component
 public class ConnectionPool {
     private final int poolSize;
     private final BlockingDeque<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> givenConnections;
-    public ConnectionPool(String driver, String url, String user, String password, int poolSize) {
+
+
+    public ConnectionPool(@Value("${db.driver}") String driver, @Value("${db.url}") String url, @Value("${db.user}") String user
+            , @Value("${db.password}") String password, @Value("${db.poolSize}") int poolSize) {
         this.poolSize = poolSize;
         freeConnections = new LinkedBlockingDeque<>(this.poolSize);
         givenConnections = new ArrayDeque<>();
@@ -46,6 +52,7 @@ public class ConnectionPool {
     public void releaseConnection(Connection connection) {
         if(connection instanceof ProxyConnection proxy && givenConnections.remove(connection)) {
             freeConnections.offer(proxy);
+            log.debug("Returned proxy connection");
         }
         else {
             log.warn("Returned not proxy connection");
