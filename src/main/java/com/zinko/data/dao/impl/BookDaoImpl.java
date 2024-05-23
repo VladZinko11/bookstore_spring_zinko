@@ -2,8 +2,10 @@ package com.zinko.data.dao.impl;
 
 import com.zinko.data.dao.entity.Book;
 import com.zinko.data.dao.BookDao;
+import com.zinko.exception.EmptyRepositoryException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -48,16 +50,14 @@ public class BookDaoImpl implements BookDao {
         book.setAuthor(rs.getString(COLUMN_INDEX_2));
         book.setTitle(rs.getString(COLUMN_INDEX_3));
         book.setIsbn(rs.getString(COLUMN_INDEX_4));
-        if (rs.getDate(COLUMN_INDEX_5) != null) {
-            book.setPublicationDate(rs.getDate(COLUMN_INDEX_5).toLocalDate());
-        } else book.setPublicationDate(null);
+        book.setPublicationDate(rs.getDate(COLUMN_INDEX_5).toLocalDate());
         return book;
     }
 
     @Override
     public Book creatBook(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int update =  jdbcTemplate.update(con -> {
+        int update = jdbcTemplate.update(con -> {
             PreparedStatement statement = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
             statement.setString(PARAMETER_INDEX_1, book.getAuthor());
             statement.setString(PARAMETER_INDEX_2, book.getTitle());
@@ -65,16 +65,20 @@ public class BookDaoImpl implements BookDao {
             statement.setDate(PARAMETER_INDEX_4, Date.valueOf(book.getPublicationDate()));
             return statement;
         }, keyHolder);
-        if(update==1) {
-            Book newBook = findBookById((Long) keyHolder.getKey());
+        if (update == 1) {
+            Book newBook = findBookById(keyHolder.getKey().longValue());
             return newBook;
         } else return null;
     }
 
     @Override
     public Book findBookById(Long id) {
-        Book book = jdbcTemplate.queryForObject(SELECT_BY_ID, this::mapRow, id);
-        return book;
+        try {
+            Book book = jdbcTemplate.queryForObject(SELECT_BY_ID, this::mapRow, id);
+            return book;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -85,8 +89,12 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book findBookByIsbn(String isbn) {
-        Book book = jdbcTemplate.queryForObject(SELECT_BY_ISBN, this::mapRow, isbn);
-        return book;
+        try {
+            Book book = jdbcTemplate.queryForObject(SELECT_BY_ISBN, this::mapRow, isbn);
+            return book;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -98,7 +106,7 @@ public class BookDaoImpl implements BookDao {
         params.put("isbn", book.getIsbn());
         params.put("id", book.getId());
         int update = namedParameterJdbcTemplate.update(UPDATE, params);
-        if(update==1) {
+        if (update == 1) {
             Book updatedBook = findBookById(book.getId());
             return updatedBook;
         } else return null;
@@ -107,7 +115,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public boolean deleteBook(Long id) {
         int update = jdbcTemplate.update(DELETE, id);
-        return update==1;
+        return update == 1;
     }
 
     @Override
@@ -118,7 +126,11 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Long countAll() {
-        Long count = jdbcTemplate.queryForObject(SELECT_COUNT, (rs, rowNum) -> rs.getLong(COLUMN_INDEX_1));
-        return count;
+        try {
+            Long count = jdbcTemplate.queryForObject(SELECT_COUNT, (rs, rowNum) -> rs.getLong(COLUMN_INDEX_1));
+            return count;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new EmptyRepositoryException("Not found books in repository");
+        }
     }
 }

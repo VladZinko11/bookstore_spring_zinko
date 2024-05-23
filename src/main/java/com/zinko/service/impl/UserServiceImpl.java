@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public UserDto create(UserDto userDto) {
         log.debug("UserService method create call {}", userDto);
         if ((userDao.findByEmail(userDto.getEmail())) != null)
-            throw new OccupiedElementException("User with email " + userDto.getEmail() + " already exist");
+            throw new OccupiedElementException("User with email " + userDto.getEmail() + " is already exist");
         else return toDto(userDao.create(toUser(userDto)));
     }
 
