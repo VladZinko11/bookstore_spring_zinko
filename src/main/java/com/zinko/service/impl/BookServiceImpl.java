@@ -2,7 +2,9 @@ package com.zinko.service.impl;
 
 import com.zinko.data.dao.BookDao;
 import com.zinko.data.dao.entity.Book;
-import com.zinko.exception.MyRuntimeException;
+import com.zinko.exception.EmptyRepositoryException;
+import com.zinko.exception.InvalidIndexException;
+import com.zinko.exception.OccupiedElementException;
 import com.zinko.service.BookService;
 import com.zinko.service.dto.BookDto;
 import lombok.RequiredArgsConstructor;
@@ -43,14 +45,14 @@ public class BookServiceImpl implements BookService {
         log.debug("BookService method findById call with id: {}", id);
         Book book = bookDao.findBookById(id);
         if (book != null) return toDto(bookDao.findBookById(id));
-        else throw new MyRuntimeException("Not found book with id: " + id, 404);
+        else throw new InvalidIndexException("Not found book with id: " + id);
     }
 
     @Override
     public List<BookDto> findAll() {
         log.debug("BookService method findAll call");
         List<BookDto> list = bookDao.findAllBook().stream().map(this::toDto).toList();
-        if(list.isEmpty()) throw new MyRuntimeException("Books directory is empty");
+        if(list.isEmpty()) throw new EmptyRepositoryException("Books directory is empty");
         else return list;
     }
 
@@ -60,7 +62,7 @@ public class BookServiceImpl implements BookService {
         if (bookDao.findBookByIsbn(bookDto.getIsbn()) == null) {
             Book book = bookDao.creatBook(toBook(bookDto));
             return toDto(book);
-        } else throw new MyRuntimeException("Book with isbn: " + bookDto.getIsbn() + " is exist");
+        } else throw new OccupiedElementException("Book with isbn: " + bookDto.getIsbn() + " is exist");
     }
 
     @Override
@@ -73,7 +75,7 @@ public class BookServiceImpl implements BookService {
         if (bookDto.getPublicationDate() == null) bookDto.setPublicationDate(bookBefore.getPublicationDate());
         Book book;
         if((book=bookDao.findBookByIsbn(bookDto.getIsbn())) != null &&
-                !book.equals(bookDao.findBookById(bookDto.getId()))) throw new MyRuntimeException("Book with isbn " + book.getIsbn() + " is exist");
+                !book.equals(bookDao.findBookById(bookDto.getId()))) throw new OccupiedElementException("Book with isbn " + book.getIsbn() + " is exist");
         else {
             Book newBook = bookDao.updateBook(toBook(bookDto));
             return toDto(newBook);
@@ -83,6 +85,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long id) {
         log.debug("BookService method delete call with id: {}", id);
-        if (!bookDao.deleteBook(id)) throw new MyRuntimeException("Not found book with id: " + id, 404);
+        if (!bookDao.deleteBook(id)) throw new InvalidIndexException("Not found book with id: " + id);
     }
 }
