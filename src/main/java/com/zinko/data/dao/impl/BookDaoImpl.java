@@ -66,7 +66,7 @@ public class BookDaoImpl implements BookDao {
             return statement;
         }, keyHolder);
         if (update == 1) {
-            Book newBook = findBookById(keyHolder.getKey().longValue());
+            Book newBook = findBookById((Long) keyHolder.getKeys().get("id"));
             return newBook;
         } else return null;
     }
