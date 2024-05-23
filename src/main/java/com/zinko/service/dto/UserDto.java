@@ -11,6 +11,6 @@ public class UserDto {
     private String lastName;
     private String email;
     private String password;
-    private Role role;
+    private Role role = Role.CUSTOMER;
 
 }

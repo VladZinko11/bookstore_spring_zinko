@@ -12,6 +12,6 @@ public class Book {
     private String author;
     private String title;
     private String isbn;
-    private LocalDate publicationDate;
+    private LocalDate publicationDate = LocalDate.now();
 
 }

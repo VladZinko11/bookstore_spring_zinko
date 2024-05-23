@@ -3,8 +3,10 @@ package com.zinko.data.dao.impl;
 import com.zinko.data.dao.UserDao;
 import com.zinko.data.dao.entity.User;
 import com.zinko.data.dao.entity.enums.Role;
+import com.zinko.exception.EmptyRepositoryException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -35,7 +37,6 @@ public class UserDaoImpl implements UserDao {
     private static final int COLUMN_INDEX_4 = 4;
     private static final int COLUMN_INDEX_5 = 5;
     private static final int COLUMN_INDEX_6 = 6;
-    private static final int PARAMETER_INDEX_6 = 6;
     private static final String SELECT_COUNT = "SELECT COUNT(*) FROM public.user WHERE deleted=false";
     private static final String SELECT_BY_LAST_NAME = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, e.role FROM public.user AS u JOIN public.enum_role AS e ON u.id_enum_role=e.id WHERE u.last_name=? AND u.deleted=false";
     private static final String SELECT_BY_EMAIL = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, e.role FROM public.user AS u JOIN public.enum_role AS e ON u.id_enum_role=e.id WHERE u.email=? AND u.deleted=false";
@@ -44,7 +45,6 @@ public class UserDaoImpl implements UserDao {
     private static final String SELECT_ALL = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, e.role FROM public.user AS u JOIN public.enum_role AS e ON u.id_enum_role=e.id WHERE u.deleted=false ORDER BY u.id";
     private static final String SELECT_BY_ID = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, e.role FROM public.user AS u JOIN public.enum_role AS e ON u.id_enum_role=e.id WHERE u.id=? AND u.deleted=false";
     private static final String CREATE = "INSERT INTO public.user (first_name, last_name, email, password, id_enum_role, deleted) VALUES (?, ?, ?, ?, (SELECT id FROM enum_role WHERE role=?), false)";
-    private static final String SELECT_ID_ROLE = "SELECT id FROM enum_role WHERE role=?";
 
     private User mapRow(ResultSet resultSet, int num) throws SQLException {
         User user = new User();
@@ -70,15 +70,19 @@ public class UserDaoImpl implements UserDao {
             return statement;
         }, keyHolder);
         if (update == 1) {
-            User newUser = findById((Long) keyHolder.getKey());
+            User newUser = findById((Long) keyHolder.getKeys().get("id"));
             return newUser;
         } else return null;
     }
 
     @Override
     public User findById(Long id) {
-        User user = jdbcTemplate.queryForObject(SELECT_BY_ID, this::mapRow, id);
-        return user;
+        try {
+            User user = jdbcTemplate.queryForObject(SELECT_BY_ID, this::mapRow, id);
+            return user;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
 
@@ -98,7 +102,7 @@ public class UserDaoImpl implements UserDao {
         params.put("role", user.getRole().toString());
         params.put("id", user.getId());
         int update = namedParameterJdbcTemplate.update(UPDATE, params);
-        if(update==1) {
+        if (update == 1) {
             User updatedUser = findById(user.getId());
             return updatedUser;
         } else return null;
@@ -107,13 +111,17 @@ public class UserDaoImpl implements UserDao {
     @Override
     public boolean delete(User user) {
         int update = jdbcTemplate.update(DELETE, user.getId());
-        return update==1;
+        return update == 1;
     }
 
     @Override
     public User findByEmail(String email) {
-        User user = jdbcTemplate.queryForObject(SELECT_BY_EMAIL, this::mapRow, email);
-        return user;
+        try {
+            User user = jdbcTemplate.queryForObject(SELECT_BY_EMAIL, this::mapRow, email);
+            return user;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -124,7 +132,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Long countAll() {
-        Long count = jdbcTemplate.queryForObject(SELECT_COUNT, (rs, rowNum) -> rs.getLong(COLUMN_INDEX_1));
-        return count;
+        try {
+            Long count = jdbcTemplate.queryForObject(SELECT_COUNT, (rs, rowNum) -> rs.getLong(COLUMN_INDEX_1));
+            return count;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new EmptyRepositoryException("Not found any users");
+        }
     }
 }
