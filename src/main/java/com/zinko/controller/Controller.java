@@ -2,7 +2,10 @@ package com.zinko.controller;
 
 import com.zinko.AppContext;
 import com.zinko.controller.commands.Command;
-import com.zinko.exception.MyRuntimeException;
+import com.zinko.exception.EmptyRepositoryException;
+import com.zinko.exception.FailedLoginException;
+import com.zinko.exception.InvalidIndexException;
+import com.zinko.exception.OccupiedElementException;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,8 +14,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.DataAccessException;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @Slf4j
 @WebServlet("/controller")
@@ -42,11 +47,19 @@ public class Controller extends HttpServlet {
             String page = commandInstance.execute(req);
             log.debug(page);
             req.getRequestDispatcher(page).forward(req, resp);
-        } catch (MyRuntimeException e) {
+        } catch (EmptyRepositoryException | FailedLoginException | OccupiedElementException e) {
             log.error(e.getMessage(), e);
             req.setAttribute("message", e.getMessage());
-            if(e.getStatus()!=null) {
-            resp.setStatus(e.getStatus());}
+            req.getRequestDispatcher("jsp/exception.jsp").forward(req, resp);
+        }catch (InvalidIndexException e) {
+            log.error(e.getMessage(), e);
+            req.setAttribute("message", e.getMessage());
+            resp.setStatus(404);
+            req.getRequestDispatcher("jsp/exception.jsp").forward(req, resp);
+        }catch (Exception e) {
+            log.error(e.getMessage(), e);
+            req.setAttribute("message", "Oops, something wrong with server");
+            resp.setStatus(500);
             req.getRequestDispatcher("jsp/exception.jsp").forward(req, resp);
         }
     }
