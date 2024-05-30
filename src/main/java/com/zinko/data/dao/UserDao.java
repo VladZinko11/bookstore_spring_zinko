@@ -3,22 +3,23 @@ package com.zinko.data.dao;
 import com.zinko.data.dao.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao {
 
-    User create(User user);
+    Optional<User> create(User user);
 
-    User findById(Long id);
+    Optional<User> findById(Long id);
 
-    List<User> findAll();
+    List<Optional<User>> findAll();
 
-    User update(User user);
+    Optional<User> update(User user);
 
     boolean delete(User user);
 
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
-    List<User> findByLastName(String LastName);
+    List<Optional<User>> findByLastName(String lastName);
 
     Long countAll();
 

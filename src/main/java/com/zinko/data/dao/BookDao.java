@@ -3,22 +3,23 @@ package com.zinko.data.dao;
 import com.zinko.data.dao.entity.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
 
-    Book creatBook(Book book);
+    Optional<Book> creatBook(Book book);
 
-    Book findBookById(Long id);
+    Optional<Book> findBookById(Long id);
 
-    List<Book> findAllBook();
+    List<Optional<Book>> findAllBook();
 
-    Book findBookByIsbn(String isbn);
+    Optional<Book> findBookByIsbn(String isbn);
 
-    Book updateBook(Book book);
+    Optional<Book> updateBook(Book book);
 
     boolean deleteBook(Long id);
 
-    List<Book> findByAuthor(String author);
+    List<Optional<Book>> findByAuthor(String author);
 
     Long countAll();
 
