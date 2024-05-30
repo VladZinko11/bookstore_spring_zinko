@@ -1,12 +1,11 @@
-package com.zinko.data.dao;
+package com.zinko.data.repository;
 
 import com.zinko.data.dao.entity.User;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserDao {
-
+public interface UserRepository {
     Optional<User> create(User user);
 
     Optional<User> findById(Long id);
@@ -22,5 +21,4 @@ public interface UserDao {
     List<Optional<User>> findByLastName(String lastName);
 
     Long countAll();
-
 }

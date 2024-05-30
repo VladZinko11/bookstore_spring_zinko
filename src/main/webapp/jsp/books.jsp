@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="navBar.jsp" %>
 <html>
@@ -15,6 +16,7 @@
             <div class="table_list_cell">${book.title}</div>
             <div class="table_list_cell">${book.isbn}</div>
             <div class="table_list_cell">${book.publicationDate.getYear()}</div>
+            <div class="table_list_cell">${book.price}$</div>
         </a>
         <form>
             <input type="hidden" name="command" value="book_edit_form">

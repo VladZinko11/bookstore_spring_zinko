@@ -1,108 +1,91 @@
 package com.zinko.service.impl;
 
-import com.zinko.data.dao.UserDao;
 import com.zinko.data.dao.entity.User;
+import com.zinko.data.repository.UserRepository;
 import com.zinko.exception.EmptyRepositoryException;
 import com.zinko.exception.FailedLoginException;
 import com.zinko.exception.InvalidIndexException;
 import com.zinko.exception.OccupiedElementException;
 import com.zinko.service.UserService;
 import com.zinko.service.dto.UserDto;
+import com.zinko.service.serviceMapper.ServiceMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
-
-
-    private UserDto toDto(User user) {
-        if (user != null) {
-            UserDto userDto = new UserDto();
-            userDto.setId(user.getId());
-            userDto.setFirstName(user.getFirstName());
-            userDto.setLastName(user.getLastName());
-            userDto.setEmail(user.getEmail());
-            userDto.setRole(user.getRole());
-            userDto.setPassword(user.getPassword());
-            return userDto;
-        } else return null;
-    }
-
-    private User toUser(UserDto userDto) {
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setRole(userDto.getRole());
-        return user;
-    }
+    private final UserRepository userRepository;
+    private final ServiceMapper serviceMapper;
 
     public List<UserDto> findAll() {
         log.debug("UserService method findAll call");
-        List<UserDto> list = userDao.findAll().stream().map(this::toDto).toList();
-        if (list.isEmpty()) throw new EmptyRepositoryException("No registered users");
+        List<UserDto> list = userRepository.findAll().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(this.serviceMapper::toDto)
+                .toList();
+        if (list.isEmpty()) {
+            throw new EmptyRepositoryException("No registered users");
+        }
         return list;
     }
 
     @Override
     public UserDto findById(Long id) {
         log.debug("UserService method findById call with id: {}", id);
-        User user = userDao.findById(id);
-        if (user != null)
-            return toDto(user);
-        else throw new InvalidIndexException("User with id: " + id + " not exist");
+        User user = userRepository.findById(id).orElseThrow(() -> new InvalidIndexException("User with id: " + id + " not exist"));
+        UserDto userDto = serviceMapper.toDto(user);
+        return userDto;
     }
 
     @Override
     public UserDto create(UserDto userDto) {
         log.debug("UserService method create call {}", userDto);
-        if ((userDao.findByEmail(userDto.getEmail())) != null)
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new OccupiedElementException("User with email " + userDto.getEmail() + " is already exist");
-        else return toDto(userDao.create(toUser(userDto)));
+        }
+        User user = userRepository.create(serviceMapper.toUser(userDto)).orElseThrow(RuntimeException::new);
+        UserDto userDto1 = serviceMapper.toDto(user);
+        return userDto1;
     }
 
     @Override
     public UserDto update(UserDto userDto) {
         log.debug("UserService method update call {}", userDto);
-        User userBefore = toUser(findById(userDto.getId()));
-        if (userDto.getFirstName() == null)
-            userDto.setFirstName(userBefore.getFirstName());
-        if (userDto.getLastName() == null)
-            userDto.setLastName(userBefore.getLastName());
-        if (userDto.getEmail() == null)
-            userDto.setEmail(userBefore.getEmail());
-        if (userDto.getPassword() == null)
-            userDto.setPassword(userBefore.getPassword());
-        if (userDto.getRole() == null)
-            userDto.setRole(userBefore.getRole());
-        User user;
-        if ((user=userDao.findByEmail(userDto.getEmail()))!=null && !userBefore.equals(user))
-            throw new OccupiedElementException("User with email " + userDto.getEmail() + " is exist");
-        else {
-            return toDto(userDao.update(toUser(userDto)));
+        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+        if (optionalUser.isPresent()) {
+            if (!Objects.equals(optionalUser.get().getId(), userDto.getId())) {
+                throw new OccupiedElementException("User with email " + userDto.getEmail() + " is exist");
+            }
         }
+        User user = userRepository.update(serviceMapper.toUser(userDto)).orElseThrow(RuntimeException::new);
+        UserDto userDto1 = serviceMapper.toDto(user);
+        return userDto1;
     }
 
     public void delete(Long id) {
         log.debug("UserService method delete call with id: {}", id);
-        userDao.delete(toUser(findById(id)));
+        if (!userRepository.delete(serviceMapper.toUser(findById(id)))) {
+            throw new InvalidIndexException("Not found user with id : " + id);
+        }
     }
 
     @Override
     public UserDto login(String email, String password) {
         log.debug("UserService method login call with email {} and password {}", email, password);
-        User user = userDao.findByEmail(email);
-        if (user == null) throw new FailedLoginException("Not found user with email: " + email);
-        if (!user.getPassword().equals(password)) throw new FailedLoginException("Wrong password");
-        else return toDto(user);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new FailedLoginException("Not found user with email: " + email));
+        if (!user.getPassword().equals(password)) {
+            throw new FailedLoginException("Wrong password");
+        }
+        UserDto userDto = serviceMapper.toDto(user);
+        return userDto;
     }
 }

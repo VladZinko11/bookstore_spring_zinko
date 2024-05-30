@@ -14,10 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -46,7 +43,7 @@ public class UserDaoImpl implements UserDao {
     private static final String SELECT_BY_ID = "SELECT u.id, u.first_name, u.last_name, u.email, u.password, e.role FROM public.user AS u JOIN public.enum_role AS e ON u.id_enum_role=e.id WHERE u.id=? AND u.deleted=false";
     private static final String CREATE = "INSERT INTO public.user (first_name, last_name, email, password, id_enum_role, deleted) VALUES (?, ?, ?, ?, (SELECT id FROM enum_role WHERE role=?), false)";
 
-    private User mapRow(ResultSet resultSet, int num) throws SQLException {
+    private Optional<User> mapRow(ResultSet resultSet, int num) throws SQLException {
         User user = new User();
         user.setId(resultSet.getLong(COLUMN_INDEX_1));
         user.setFirstName(resultSet.getString(COLUMN_INDEX_2));
@@ -54,11 +51,11 @@ public class UserDaoImpl implements UserDao {
         user.setEmail(resultSet.getString(COLUMN_INDEX_4));
         user.setPassword(resultSet.getString(COLUMN_INDEX_5));
         user.setRole(Role.valueOf(resultSet.getString(COLUMN_INDEX_6)));
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public User create(User user) {
+    public Optional<User> create(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int update = jdbcTemplate.update(con -> {
             PreparedStatement statement = con.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
@@ -69,31 +66,29 @@ public class UserDaoImpl implements UserDao {
             statement.setString(PARAMETER_INDEX_5, user.getRole().toString());
             return statement;
         }, keyHolder);
-        if (update == 1) {
-            User newUser = findById((Long) keyHolder.getKeys().get("id"));
-            return newUser;
-        } else return null;
+                Optional<User> optionalUser = findById((Long) Objects.requireNonNull(keyHolder.getKeys()).get("id"));
+                return optionalUser;
     }
 
     @Override
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         try {
-            User user = jdbcTemplate.queryForObject(SELECT_BY_ID, this::mapRow, id);
-            return user;
+            Optional<User> optionalUser = jdbcTemplate.queryForObject(SELECT_BY_ID, this::mapRow, id);
+            return optionalUser;
         } catch (IncorrectResultSizeDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
     }
 
 
     @Override
-    public List<User> findAll() {
-        List<User> list = jdbcTemplate.query(SELECT_ALL, this::mapRow);
+    public List<Optional<User>> findAll() {
+        List<Optional<User>> list = jdbcTemplate.query(SELECT_ALL, this::mapRow);
         return list;
     }
 
     @Override
-    public User update(User user) {
+    public Optional<User> update(User user) {
         Map<String, Object> params = new HashMap<>();
         params.put("first_name", user.getFirstName());
         params.put("last_name", user.getLastName());
@@ -101,11 +96,9 @@ public class UserDaoImpl implements UserDao {
         params.put("password", user.getPassword());
         params.put("role", user.getRole().toString());
         params.put("id", user.getId());
-        int update = namedParameterJdbcTemplate.update(UPDATE, params);
-        if (update == 1) {
-            User updatedUser = findById(user.getId());
-            return updatedUser;
-        } else return null;
+        namedParameterJdbcTemplate.update(UPDATE, params);
+            Optional<User> optionalUser = findById(user.getId());
+            return optionalUser;
     }
 
     @Override
@@ -115,18 +108,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         try {
-            User user = jdbcTemplate.queryForObject(SELECT_BY_EMAIL, this::mapRow, email);
-            return user;
+            Optional<User> optionalUser = jdbcTemplate.queryForObject(SELECT_BY_EMAIL, this::mapRow, email);
+            return optionalUser;
         } catch (IncorrectResultSizeDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
     }
 
     @Override
-    public List<User> findByLastName(String lastName) {
-        List<User> list = jdbcTemplate.query(SELECT_BY_LAST_NAME, this::mapRow, lastName);
+    public List<Optional<User>> findByLastName(String lastName) {
+        List<Optional<User>> list = jdbcTemplate.query(SELECT_BY_LAST_NAME, this::mapRow, lastName);
         return list;
     }
 

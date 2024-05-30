@@ -1,11 +1,11 @@
-package com.zinko.data.dao;
+package com.zinko.data.repository;
 
 import com.zinko.data.dao.entity.Book;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BookDao {
+public interface BookRepository {
 
     Optional<Book> creatBook(Book book);
 
@@ -20,7 +20,5 @@ public interface BookDao {
     boolean deleteBook(Long id);
 
     List<Optional<Book>> findByAuthor(String author);
-
-    Long countAll();
 
 }

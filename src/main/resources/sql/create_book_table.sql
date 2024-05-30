@@ -10,5 +10,6 @@ CREATE TABLE public.book
     isbn VARCHAR(100),
     publication_date DATE,
     deleted BOOLEAN,
+    price DECIMAL,
     UNIQUE (id, isbn, deleted)
 );

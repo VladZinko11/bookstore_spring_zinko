@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="navBar.jsp" %>
 
@@ -21,6 +22,11 @@
             <input type="hidden" name="command" value="user_edit_form">
             <input type="hidden" name="id" value="${user.id}">
             <input type="submit" value="edit">
+        </form>
+        <form>
+            <input type="hidden" name="command" value="orders_by_user_id">
+            <input type="hidden" name="id" value="${user.id}">
+            <input type="submit" value="orders">
         </form>
         <form method="delete">
             <input type="hidden" name="command" value="user_delete">

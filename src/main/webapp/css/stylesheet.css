@@ -81,3 +81,29 @@ a.table_list_row:hover {
     background: url('/images/img.png');
     background-size: cover;
 }
+.order {
+    font-size: 25px;
+}
+.order_owner {
+    display: grid;
+    width: 60%;
+    margin-left: 20%;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 40px;
+}
+.order_cost {
+    display: grid;
+    width: 20%;
+    margin-left: 80%;
+    font-size: 30px;
+    text-align: left;
+}
+.order_status{
+    display: grid;
+    width: 20%;
+    margin-left: 80%;
+    font-size: 30px;
+    text-align: left;
+
+}

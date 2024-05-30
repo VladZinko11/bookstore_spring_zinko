@@ -12,6 +12,7 @@
     <a href="/controller?command=books" methods="get" class="nav-bar-a" >books</a>
     <a href="/controller?command=book_create_form" methods="get" class="nav-bar-a">create book</a>
     <a href="/controller?command=user_create_form" methods="get" class="nav-bar-a">create user</a>
+    <a href="/controller?command=orders" methods="get" class="nav-bar-a" >orders</a>
 </div>
 </body>
 </html>
