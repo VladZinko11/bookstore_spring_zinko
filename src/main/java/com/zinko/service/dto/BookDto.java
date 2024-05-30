@@ -2,6 +2,7 @@ package com.zinko.service.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 @Data
 public class BookDto {
@@ -11,5 +12,6 @@ public class BookDto {
     private String title;
     private String isbn;
     private LocalDate publicationDate = LocalDate.now();
+    private BigDecimal price;
 
 }
