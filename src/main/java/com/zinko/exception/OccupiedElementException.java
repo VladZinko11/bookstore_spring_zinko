@@ -1,6 +1,10 @@
 package com.zinko.exception;
 
-public class OccupiedElementException extends RuntimeException {
+public class OccupiedElementException extends BsException {
+    public OccupiedElementException() {
+        super();
+    }
+
     public OccupiedElementException(String message) {
         super(message);
     }

@@ -7,12 +7,14 @@ import com.zinko.service.OrderService;
 import com.zinko.service.dto.OrderDto;
 import com.zinko.service.serviceMapper.ServiceMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
@@ -21,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> findAll() {
+        log.debug("OrderService findAll method call");
         List<OrderDto> list = orderRepository.findAll().stream()
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -35,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> findByUserId(Long id) {
+        log.debug("OrderService findByUserId method call with userId: {}", id);
         List<OrderDto> list = orderRepository.findByUserId(id).stream()
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -49,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto findById(Long id) {
+        log.debug("OrderService findById method call with id: {}", id);
         OrderDto orderDto = serviceMapper.toDto(orderRepository.findById(id)
                 .orElseThrow(()->new InvalidIndexException("Not found order with id: " + id)));
         return orderDto;

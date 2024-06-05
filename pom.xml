@@ -12,13 +12,22 @@
     <properties>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
+        <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <log4j2.version>2.23.1</log4j2.version>
         <postgresql.version>42.7.3</postgresql.version>
         <lombok.version>1.18.32</lombok.version>
         <servlet.version>6.0.0</servlet.version>
         <jakarta.version>3.0.0</jakarta.version>
+        <jakarta.servlet.jsp-api.version>3.1.1</jakarta.servlet.jsp-api.version>
         <spring.version>6.1.5</spring.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <glassfish.version>3.0.1</glassfish.version>
+        <slf4j-api.version>2.0.13</slf4j-api.version>
+        <HikariCP.version>5.1.0</HikariCP.version>
+        <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
+        <hibernate-core.version>6.4.1.Final</hibernate-core.version>
+        <h2.version>2.2.220</h2.version>
     </properties>
 
     <dependencies>
@@ -46,15 +55,15 @@
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
             <version>${jakarta.version}</version>
         </dependency>
-        <dependency>
+               <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-            <version>3.0.1</version>
+            <version>${glassfish.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet.jsp</groupId>
             <artifactId>jakarta.servlet.jsp-api</artifactId>
-            <version>3.1.1</version>
+            <version>${jakarta.servlet.jsp-api.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -71,7 +80,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.13</version>
+            <version>${slf4j-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -86,18 +95,39 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>5.1.0</version>
+            <version>${HikariCP.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
             <version>${jakarta.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${jakarta.persistence-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
         </dependency>
 
     </dependencies>
@@ -107,7 +137,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>${maven-war-plugin.version}</version>
                 <configuration>
                     <webappDirectory>${env.CATALINA_HOME}/webapps/bookstore_spring_zinko</webappDirectory>
                 </configuration>
@@ -115,7 +145,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>21</source>
                     <target>21</target>
