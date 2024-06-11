@@ -1,13 +1,10 @@
 package com.zinko.data.repository;
 
-import com.zinko.data.dao.entity.Order;
+import com.zinko.data.entity.Order;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface OrderRepository {
-    List<Optional<Order>> findAll();
-    List<Optional<Order>> findByUserId(Long id);
+public interface OrderRepository extends CrudRepository<Order, Long>{
+    List<Order> findByUserId(Long key);
 
-    Optional<Order> findById(Long id);
 }

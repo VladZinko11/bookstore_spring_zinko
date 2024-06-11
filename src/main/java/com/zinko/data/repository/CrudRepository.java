@@ -7,7 +7,7 @@ public interface CrudRepository <T, K> {
 
     Optional<T> findById(K key);
 
-    List<Optional<T>> findAll();
+    List<T> findAll();
 
     void save(T entity);
 
