@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS book;
+DROP TABLE IF EXISTS books;
 
 
 
-CREATE TABLE public.book
+CREATE TABLE public.books
 (
     id BIGSERIAL UNIQUE PRIMARY KEY,
     author VARCHAR(100),
@@ -10,6 +10,5 @@ CREATE TABLE public.book
     isbn VARCHAR(100),
     publication_date DATE,
     deleted BOOLEAN,
-    price DECIMAL,
-    UNIQUE (id, isbn, deleted)
+    price NUMERIC(38,2)
 );

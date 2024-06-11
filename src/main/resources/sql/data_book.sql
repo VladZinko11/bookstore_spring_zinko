@@ -1,4 +1,4 @@
-INSERT INTO book(
+INSERT INTO books(
     author, title, isbn, publication_date, deleted, price)
 VALUES
 ('Джоана Роулинг', 'Гарри Потер и узник Аскабана', '978-5-389-17021-6', '01-01-2019', false, 5),

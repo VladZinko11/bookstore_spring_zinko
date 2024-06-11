@@ -1,10 +1,10 @@
-DROP TABLE IF EXISTS public.order_item;
+DROP TABLE IF EXISTS public.order_items;
 
-CREATE TABLE public.order_item
+CREATE TABLE public.order_items
 (
-    book_id int8,
-    quantity int4,
-    price DECIMAL,
-    order_id int8,
+    id BIGSERIAL UNIQUE PRIMARY KEY,
+    book_id BIGSERIAL,
+    quantity integer,
+    order_id BIGSERIAL,
     deleted BOOLEAN
 );
