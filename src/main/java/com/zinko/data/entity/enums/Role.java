@@ -1,4 +1,4 @@
-package com.zinko.data.dao.entity.enums;
+package com.zinko.data.entity.enums;
 
 public enum Role {
     ADMIN,
