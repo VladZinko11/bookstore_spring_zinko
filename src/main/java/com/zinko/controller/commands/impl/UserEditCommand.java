@@ -6,20 +6,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 
 @Controller("user_edit")
-public class UserEditCommand extends AbstractUserCommand{
+public class UserEditCommand extends AbstractUserCommand {
     public UserEditCommand(UserService userService) {
         super(userService);
     }
 
     @Override
     public String execute(HttpServletRequest req) {
-        UserDto userDto = new UserDto();
-        userDto.setId(Long.valueOf(req.getParameter("id")));
-        userDto.setFirstName(req.getParameter("firstName"));
-        userDto.setLastName(req.getParameter("lastName"));
-        userDto.setEmail(req.getParameter("email"));
-        userDto.setPassword(req.getParameter("password"));
-        req.setAttribute("user", userService.update(userDto));
+        UserDto userDto = UserDto.builder()
+                .id(Long.valueOf(req.getParameter("id")))
+                .firstName(req.getParameter("firstName"))
+                .lastName(req.getParameter("lastName"))
+                .email(req.getParameter("email"))
+                .password(req.getParameter("password"))
+                .build();
+        userService.update(userDto);
+        req.setAttribute("user", userService.findById(userDto.getId()));
         return "jsp/user.jsp";
     }
 }
