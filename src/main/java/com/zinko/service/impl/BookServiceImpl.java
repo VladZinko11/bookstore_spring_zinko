@@ -1,6 +1,6 @@
 package com.zinko.service.impl;
 
-import com.zinko.data.dao.entity.Book;
+import com.zinko.data.entity.Book;
 import com.zinko.data.repository.BookRepository;
 import com.zinko.exception.EmptyRepositoryException;
 import com.zinko.exception.InvalidIndexException;
@@ -11,8 +11,8 @@ import com.zinko.service.serviceMapper.ServiceMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,45 +27,53 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto findById(Long id) {
         log.debug("BookService method findById call with id: {}", id);
-        Book book = bookRepository.findBookById(id).orElseThrow(() -> new InvalidIndexException("Not found book with id: " + id));
-        BookDto bookDto = serviceMapper.toDto(book);
-        return bookDto;
+        Book book = bookRepository.findById(id).orElseThrow(() -> new InvalidIndexException("Not found book with id: " + id));
+        return serviceMapper.toDto(book);
     }
 
     @Override
     public List<BookDto> findAll() {
         log.debug("BookService method findAll call");
-        List<Book> bookList = bookRepository.findAllBook().stream().filter(Optional::isPresent).map(Optional::get).toList();
+        List<Book> bookList = bookRepository.findAll();
         List<BookDto> bookDtoList = bookList.stream().map(this.serviceMapper::toDto).toList();
         if (bookDtoList.isEmpty()) throw new EmptyRepositoryException("Books directory is empty");
         else return bookDtoList;
     }
 
+    @Transactional
     @Override
-    public BookDto create(BookDto bookDto) {
+    public void create(BookDto bookDto) {
         log.debug("BookService method create {}", bookDto);
         if (bookRepository.findBookByIsbn(bookDto.getIsbn()).isEmpty()) {
-            Book book = bookRepository.creatBook(serviceMapper.toBook(bookDto)).orElseThrow(RuntimeException::new);
-            return serviceMapper.toDto(book);
+            bookRepository.save(serviceMapper.toBook(bookDto));
         } else throw new OccupiedElementException("Book with isbn: " + bookDto.getIsbn() + " is exist");
     }
 
+    @Transactional
     @Override
-    public BookDto update(BookDto bookDto) {
+    public void update(BookDto bookDto) {
         log.debug("BookService method update call {}", bookDto);
         Optional<Book> optionalBook = bookRepository.findBookByIsbn(bookDto.getIsbn());
-        if (optionalBook.isPresent()) {
-            if (!Objects.equals(optionalBook.get().getId(), bookDto.getId())) {
-                throw new OccupiedElementException("Book with isbn " + bookDto.getIsbn() + " is exist");
+        if(optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            if(!Objects.equals(book.getId(), bookDto.getId())) {
+                throw new OccupiedElementException("Book with isbn: " + bookDto.getIsbn() + " is exist");
             }
         }
-        Book newBook = bookRepository.updateBook(serviceMapper.toBook(bookDto)).orElseThrow(RuntimeException::new);
-        return serviceMapper.toDto(newBook);
+        bookRepository.save(serviceMapper.toBook(bookDto));
     }
 
     @Override
     public void delete(Long id) {
         log.debug("BookService method delete call with id: {}", id);
-        if (!bookRepository.deleteBook(id)) throw new InvalidIndexException("Not found book with id: " + id);
+        if(!bookRepository.delete(id)) {
+            throw new InvalidIndexException("Not found book with id: "+ id);
+        }
+    }
+
+    @Override
+    public BookDto findByIsbn(String isbn) {
+        log.debug("BookService method findByIsbn call with isbn: {}", isbn);
+        return serviceMapper.toDto(bookRepository.findBookByIsbn(isbn).orElseThrow(()-> new InvalidIndexException("Not found book with isbn: " + isbn)));
     }
 }
