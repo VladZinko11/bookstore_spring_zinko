@@ -1,6 +1,7 @@
 package com.zinko.data.repository.impl;
 
 import com.zinko.data.entity.Order;
+import com.zinko.data.entity.User;
 import com.zinko.data.repository.OrderRepository;
 import com.zinko.exception.InvalidIndexException;
 import jakarta.persistence.EntityManager;
@@ -15,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderRepositoryImpl implements OrderRepository {
     private static final String SELECT_ALL = "FROM Order WHERE deleted=false";
-    private static final String SELECT_BY_USER_ID = "FROM Order WHERE deleted=false AND user_id=:user_id";
+    private static final String SELECT_BY_USER_ID = "FROM Order WHERE deleted=false AND user=:user";
     @PersistenceContext
     private EntityManager manager;
 
@@ -45,8 +46,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 
 
     @Override
-    public List<Order> findByUserId(Long key) {
-        return manager.createQuery(SELECT_BY_USER_ID, Order.class).setParameter("user_id", key).getResultList();
+    public List<Order> findByUser(User user) {
+        return manager.createQuery(SELECT_BY_USER_ID, Order.class).setParameter("user", user).getResultList();
     }
 
     @Override
