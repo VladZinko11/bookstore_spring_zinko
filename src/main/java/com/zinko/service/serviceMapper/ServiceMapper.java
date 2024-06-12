@@ -1,9 +1,9 @@
 package com.zinko.service.serviceMapper;
 
-import com.zinko.data.dao.entity.Book;
-import com.zinko.data.dao.entity.Order;
-import com.zinko.data.dao.entity.OrderItem;
-import com.zinko.data.dao.entity.User;
+import com.zinko.data.entity.Book;
+import com.zinko.data.entity.Order;
+import com.zinko.data.entity.OrderItem;
+import com.zinko.data.entity.User;
 import com.zinko.service.dto.BookDto;
 import com.zinko.service.dto.OrderDto;
 import com.zinko.service.dto.OrderItemDto;
