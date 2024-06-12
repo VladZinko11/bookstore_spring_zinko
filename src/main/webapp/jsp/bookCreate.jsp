@@ -19,6 +19,9 @@
   <p>
     <input type="date" name="publication_date" required>
   </p>
+  <p>
+    <input type="number" name="price" placeholder="price" required>
+  </p>
   <input type="submit" value="create">
 </form>
 
