@@ -5,7 +5,7 @@ import com.zinko.data.entity.User;
 
 import java.util.List;
 
-public interface OrderRepository extends CrudRepository<Order, Long>{
+public interface OrderRepository extends CrudRepository<Order, Long> {
     List<Order> findByUser(User user);
 
 }

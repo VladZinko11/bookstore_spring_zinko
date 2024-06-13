@@ -49,12 +49,12 @@ public class Controller extends HttpServlet {
             log.error(e.getMessage(), e);
             req.setAttribute("message", e.getMessage());
             req.getRequestDispatcher("jsp/exception.jsp").forward(req, resp);
-        }catch (InvalidIndexException e) {
+        } catch (InvalidIndexException e) {
             log.error(e.getMessage(), e);
             req.setAttribute("message", e.getMessage());
             resp.setStatus(404);
             req.getRequestDispatcher("jsp/exception.jsp").forward(req, resp);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             req.setAttribute("message", "Oops, something wrong with server");
             resp.setStatus(500);

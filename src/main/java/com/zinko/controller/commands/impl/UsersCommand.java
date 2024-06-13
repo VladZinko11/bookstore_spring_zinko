@@ -1,19 +1,24 @@
 package com.zinko.controller.commands.impl;
 
+import com.zinko.controller.commands.Command;
 import com.zinko.service.UserService;
+import com.zinko.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
-@Controller("users")
-public class UsersCommand extends AbstractUserCommand {
+import java.util.List;
 
-    public UsersCommand(UserService userService) {
-        super(userService);
-    }
+@Controller("users")
+@RequiredArgsConstructor
+public class UsersCommand implements Command {
+
+    private final UserService userService;
 
     @Override
     public String execute(HttpServletRequest req) {
-        req.setAttribute("users", userService.findAll());
+        List<UserDto> users = userService.findAll();
+        req.setAttribute("users", users);
         return "jsp/users.jsp";
     }
 }

@@ -1,15 +1,17 @@
 package com.zinko.controller.commands.impl;
 
+import com.zinko.controller.commands.Command;
 import com.zinko.service.UserService;
 import com.zinko.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller("user_edit")
-public class UserEditCommand extends AbstractUserCommand {
-    public UserEditCommand(UserService userService) {
-        super(userService);
-    }
+@RequiredArgsConstructor
+public class UserEditCommand implements Command {
+
+    private final UserService userService;
 
     @Override
     public String execute(HttpServletRequest req) {
@@ -21,7 +23,9 @@ public class UserEditCommand extends AbstractUserCommand {
                 .password(req.getParameter("password"))
                 .build();
         userService.update(userDto);
-        req.setAttribute("user", userService.findById(userDto.getId()));
+        Long id = userDto.getId();
+        UserDto user = userService.findById(id);
+        req.setAttribute("user", user);
         return "jsp/user.jsp";
     }
 }

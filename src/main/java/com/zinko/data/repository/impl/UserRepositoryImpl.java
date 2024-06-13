@@ -32,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findById(Long key) {
         User user = manager.find(User.class, key);
-        if (user.getDeleted()) {
+        if (user != null && user.getDeleted()) {
             return Optional.empty();
         }
         return Optional.ofNullable(user);
@@ -46,7 +46,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean delete(Long key) {
         User user = manager.find(User.class, key);
-        if(user==null) {
+        if (user == null) {
             return false;
         }
         user.setDeleted(true);
@@ -56,11 +56,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findByEmail(String email) {
         try {
-            Optional<User> optionalUser = Optional.ofNullable(manager.createQuery(SELECT_BY_EMAIL, User.class)
-                    .setParameter("email", email).getSingleResult());
-            return optionalUser;
-        }
-        catch (NoResultException e) {
+            return Optional.ofNullable(manager.createQuery(SELECT_BY_EMAIL, User.class)
+                    .setParameter("email", email)
+                    .getSingleResult());
+        } catch (NoResultException e) {
             return Optional.empty();
         }
     }

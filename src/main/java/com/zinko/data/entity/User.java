@@ -1,8 +1,8 @@
 package com.zinko.data.entity;
 
-import com.zinko.data.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
+
 @Entity
 @Table(name = "users")
 @Data

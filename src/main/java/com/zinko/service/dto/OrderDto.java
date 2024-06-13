@@ -1,6 +1,6 @@
 package com.zinko.service.dto;
 
-import com.zinko.data.entity.enums.Status;
+import com.zinko.data.entity.Status;
 import lombok.Builder;
 import lombok.Data;
 

@@ -32,7 +32,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Optional<Book> findById(Long key) {
         Book book = manager.find(Book.class, key);
-        if (book.getDeleted()) {
+        if (book != null && book.getDeleted()) {
             return Optional.empty();
         }
         return Optional.ofNullable(book);
@@ -45,11 +45,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<Book> findBookByIsbn(String isbn) {
-
         try {
-            Optional<Book> optionalBook = Optional.ofNullable(
-                    manager.createQuery(SELECT_BY_ISBN, Book.class)
-                    .setParameter("isbn", isbn).getSingleResult());
+            Optional<Book> optionalBook = Optional.ofNullable(manager.createQuery(SELECT_BY_ISBN, Book.class)
+                    .setParameter("isbn", isbn)
+                    .getSingleResult());
             return optionalBook;
         } catch (NoResultException e) {
             return Optional.empty();
