@@ -3,6 +3,7 @@ package com.zinko.data.repository.impl;
 import com.zinko.data.entity.User;
 import com.zinko.data.repository.UserRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.ofNullable(manager.createQuery(SELECT_BY_EMAIL, User.class)
-                .setParameter("email", email).getSingleResult());
+        try {
+            Optional<User> optionalUser = Optional.ofNullable(manager.createQuery(SELECT_BY_EMAIL, User.class)
+                    .setParameter("email", email).getSingleResult());
+            return optionalUser;
+        }
+        catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 }

@@ -19,6 +19,9 @@
   <p>
     <input type="date" value="${book.publicationDate.toString()}" name="publication_date" required>
   </p>
+  <p>
+    <input type="number" value="${book.price}" name="price" placeholder="price" required>
+  </p>
   <input type="hidden" name="id" value="${book.id}">
   <input type="submit" value="edit">
 </form>
