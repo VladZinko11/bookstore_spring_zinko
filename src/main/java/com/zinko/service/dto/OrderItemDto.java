@@ -1,11 +1,12 @@
 package com.zinko.service.dto;
 
-import com.zinko.data.dao.entity.Book;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
+@Builder
 public class OrderItemDto {
     private BookDto bookDto;
     private Integer quantity;

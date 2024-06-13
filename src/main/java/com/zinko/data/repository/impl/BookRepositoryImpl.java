@@ -1,51 +1,68 @@
 package com.zinko.data.repository.impl;
 
-import com.zinko.data.dao.BookDao;
-import com.zinko.data.dao.entity.Book;
+import com.zinko.data.entity.Book;
 import com.zinko.data.repository.BookRepository;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+
 @Repository
-@RequiredArgsConstructor
+@Transactional
 public class BookRepositoryImpl implements BookRepository {
-    private final BookDao bookDao;
+    public static final String SELECT_ALL = "FROM Book WHERE deleted=false";
+    private static final String SELECT_BY_ISBN = "FROM Book WHERE isbn=:isbn AND deleted=false";
+    @PersistenceContext
+    private EntityManager manager;
 
     @Override
-    public Optional<Book> creatBook(Book book) {
-        return bookDao.creatBook(book);
+    public void save(Book entity) {
+        if (entity.getId() != null) {
+            manager.merge(entity);
+        } else {
+            manager.persist(entity);
+        }
     }
 
     @Override
-    public Optional<Book> findBookById(Long id) {
-        return bookDao.findBookById(id);
+    public Optional<Book> findById(Long key) {
+        Book book = manager.find(Book.class, key);
+        if (book.getDeleted()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(book);
     }
 
     @Override
-    public List<Optional<Book>> findAllBook() {
-        return bookDao.findAllBook();
+    public List<Book> findAll() {
+        return manager.createQuery(SELECT_ALL, Book.class).getResultList();
     }
 
     @Override
     public Optional<Book> findBookByIsbn(String isbn) {
-        return bookDao.findBookByIsbn(isbn);
+
+        try {
+            Optional<Book> optionalBook = Optional.ofNullable(
+                    manager.createQuery(SELECT_BY_ISBN, Book.class)
+                    .setParameter("isbn", isbn).getSingleResult());
+            return optionalBook;
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public Optional<Book> updateBook(Book book) {
-        return bookDao.updateBook(book);
-    }
-
-    @Override
-    public boolean deleteBook(Long id) {
-        return bookDao.deleteBook(id);
-    }
-
-    @Override
-    public List<Optional<Book>> findByAuthor(String author) {
-        return bookDao.findByAuthor(author);
+    public boolean delete(Long id) {
+        Book book = manager.find(Book.class, id);
+        if (book == null) {
+            return false;
+        }
+        book.setDeleted(true);
+        return true;
     }
 }

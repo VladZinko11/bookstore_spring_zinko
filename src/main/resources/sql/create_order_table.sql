@@ -1,17 +1,8 @@
-DROP TABLE IF EXISTS public.order;
-DROP TABLE IF EXISTS public.enum_status;
 
-CREATE TABLE public.order
+CREATE TABLE public.orders
 (
     id BIGSERIAL UNIQUE PRIMARY KEY,
     user_id BIGINT,
-    cost NUMERIC,
-    status_id BIGINT,
+    status VARCHAR(255) check (status in ('ISSUED' , 'PROCESSED', 'DELIVERED')),
     deleted BOOLEAN
-);
-
-CREATE TABLE public.enum_status
-(
-    id BIGSERIAL UNIQUE PRIMARY KEY,
-    status VARCHAR(30)
 );

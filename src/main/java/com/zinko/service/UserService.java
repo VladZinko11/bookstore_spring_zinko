@@ -9,12 +9,13 @@ public interface UserService {
 
     UserDto findById(Long id);
 
-    UserDto create(UserDto userDto);
+    void create(UserDto userDto);
 
-    UserDto update(UserDto userDto);
+    void update(UserDto userDto);
 
     void delete(Long id);
 
     UserDto login(String email, String password);
 
+    UserDto findByEmail(String email);
 }

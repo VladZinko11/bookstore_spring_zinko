@@ -10,14 +10,11 @@ public interface BookService {
 
     List<BookDto> findAll();
 
-    BookDto create(BookDto bookDto);
+    void create(BookDto bookDto);
 
-    BookDto update(BookDto bookDto);
+    void update(BookDto bookDto);
 
     void delete(Long id);
 
-
-
-
-
+    BookDto findByIsbn(String isbn);
 }
