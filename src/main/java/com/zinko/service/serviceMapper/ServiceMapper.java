@@ -11,10 +11,15 @@ import com.zinko.service.dto.UserDto;
 
 public interface ServiceMapper {
     BookDto toDto(Book book);
+
     Book toBook(BookDto bookDto);
+
     UserDto toDto(User user);
+
     User toUser(UserDto userDto);
+
     OrderDto toDto(Order order);
+
     OrderItemDto toDto(OrderItem orderItem);
 
 }

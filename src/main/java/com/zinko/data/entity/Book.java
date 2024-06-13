@@ -2,7 +2,7 @@ package com.zinko.data.entity;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

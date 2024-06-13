@@ -10,7 +10,6 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-
 @Configuration
 @ComponentScan
 @EnableTransactionManagement

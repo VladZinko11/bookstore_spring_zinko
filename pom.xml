@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -36,14 +36,12 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -55,7 +53,7 @@
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
             <version>${jakarta.version}</version>
         </dependency>
-               <dependency>
+        <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>${glassfish.version}</version>
@@ -66,7 +64,6 @@
             <version>${jakarta.servlet.jsp-api.version}</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -87,7 +84,6 @@
             <artifactId>log4j-slf4j2-impl</artifactId>
             <version>${log4j2.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -113,7 +109,6 @@
             <artifactId>jakarta.annotation-api</artifactId>
             <version>${jakarta.version}</version>
         </dependency>
-
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
@@ -129,7 +124,6 @@
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -139,7 +133,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${maven-war-plugin.version}</version>
                 <configuration>
-                    <webappDirectory>${env.CATALINA_HOME}/webapps/bookstore_spring_zinko</webappDirectory>
+                    <webappDirectory>${env.CATALINA_HOME}/webapps</webappDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -147,8 +141,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -159,7 +151,6 @@
                 </configuration>
             </plugin>
         </plugins>
-<finalName>bookstore_spring_zinko</finalName>
+        <finalName>bookstore_spring_zinko</finalName>
     </build>
-
 </project>

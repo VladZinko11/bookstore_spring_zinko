@@ -1,4 +1,4 @@
-package com.zinko.data.entity.enums;
+package com.zinko.data.entity;
 
 public enum Status {
     ISSUED, PROCESSED, DELIVERED

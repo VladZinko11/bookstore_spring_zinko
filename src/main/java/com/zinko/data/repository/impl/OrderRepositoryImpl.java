@@ -3,7 +3,6 @@ package com.zinko.data.repository.impl;
 import com.zinko.data.entity.Order;
 import com.zinko.data.entity.User;
 import com.zinko.data.repository.OrderRepository;
-import com.zinko.exception.InvalidIndexException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -47,13 +46,15 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> findByUser(User user) {
-        return manager.createQuery(SELECT_BY_USER_ID, Order.class).setParameter("user", user).getResultList();
+        return manager.createQuery(SELECT_BY_USER_ID, Order.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 
     @Override
     public Optional<Order> findById(Long key) {
         Order order = manager.find(Order.class, key);
-        if (order.getDeleted()) {
+        if (order != null && order.getDeleted()) {
             return Optional.empty();
         }
         return Optional.ofNullable(order);

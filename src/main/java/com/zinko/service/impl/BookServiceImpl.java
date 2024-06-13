@@ -21,13 +21,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
+
     private final BookRepository bookRepository;
     private final ServiceMapper serviceMapper;
 
     @Override
     public BookDto findById(Long id) {
         log.debug("BookService method findById call with id: {}", id);
-        Book book = bookRepository.findById(id).orElseThrow(() -> new InvalidIndexException("Not found book with id: " + id));
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new InvalidIndexException("Not found book with id: " + id));
         return serviceMapper.toDto(book);
     }
 
@@ -35,45 +37,54 @@ public class BookServiceImpl implements BookService {
     public List<BookDto> findAll() {
         log.debug("BookService method findAll call");
         List<Book> bookList = bookRepository.findAll();
-        List<BookDto> bookDtoList = bookList.stream().map(this.serviceMapper::toDto).toList();
-        if (bookDtoList.isEmpty()) throw new EmptyRepositoryException("Books directory is empty");
-        else return bookDtoList;
+        List<BookDto> bookDtoList = bookList.stream()
+                .map(this.serviceMapper::toDto)
+                .toList();
+        if (bookDtoList.isEmpty()) {
+            throw new EmptyRepositoryException("Books directory is empty");
+        }
+        return bookDtoList;
     }
 
     @Transactional
     @Override
     public void create(BookDto bookDto) {
         log.debug("BookService method create {}", bookDto);
-        if (bookRepository.findBookByIsbn(bookDto.getIsbn()).isEmpty()) {
-            bookRepository.save(serviceMapper.toBook(bookDto));
-        } else throw new OccupiedElementException("Book with isbn: " + bookDto.getIsbn() + " is exist");
+        isbnValidate(bookDto);
+        bookRepository.save(serviceMapper.toBook(bookDto));
+    }
+
+    private void isbnValidate(BookDto bookDto) {
+        String isbn = bookDto.getIsbn();
+        Optional<Book> optionalBook = bookRepository.findBookByIsbn(isbn);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            if (!Objects.equals(book.getId(), bookDto.getId())) {
+                throw new OccupiedElementException("Book with isbn: " + bookDto.getIsbn() + " is exist");
+            }
+        }
     }
 
     @Transactional
     @Override
     public void update(BookDto bookDto) {
         log.debug("BookService method update call {}", bookDto);
-        Optional<Book> optionalBook = bookRepository.findBookByIsbn(bookDto.getIsbn());
-        if(optionalBook.isPresent()) {
-            Book book = optionalBook.get();
-            if(!Objects.equals(book.getId(), bookDto.getId())) {
-                throw new OccupiedElementException("Book with isbn: " + bookDto.getIsbn() + " is exist");
-            }
-        }
+        isbnValidate(bookDto);
         bookRepository.save(serviceMapper.toBook(bookDto));
     }
 
     @Override
     public void delete(Long id) {
         log.debug("BookService method delete call with id: {}", id);
-        if(!bookRepository.delete(id)) {
-            throw new InvalidIndexException("Not found book with id: "+ id);
+        if (!bookRepository.delete(id)) {
+            throw new InvalidIndexException("Not found book with id: " + id);
         }
     }
 
     @Override
     public BookDto findByIsbn(String isbn) {
         log.debug("BookService method findByIsbn call with isbn: {}", isbn);
-        return serviceMapper.toDto(bookRepository.findBookByIsbn(isbn).orElseThrow(()-> new InvalidIndexException("Not found book with isbn: " + isbn)));
+        return serviceMapper.toDto(bookRepository.findBookByIsbn(isbn)
+                .orElseThrow(() -> new InvalidIndexException("Not found book with isbn: " + isbn)));
     }
 }

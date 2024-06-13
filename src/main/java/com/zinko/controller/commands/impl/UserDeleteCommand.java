@@ -1,19 +1,26 @@
 package com.zinko.controller.commands.impl;
 
+import com.zinko.controller.commands.Command;
 import com.zinko.service.UserService;
+import com.zinko.service.dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller("user_delete")
-public class UserDeleteCommand extends AbstractUserCommand {
-    public UserDeleteCommand(UserService userService) {
-        super(userService);
-    }
+@RequiredArgsConstructor
+public class UserDeleteCommand implements Command {
+
+    private final UserService userService;
 
     @Override
     public String execute(HttpServletRequest req) {
-        userService.delete(Long.valueOf(req.getParameter("id")));
-        req.setAttribute("users", userService.findAll());
+        Long id = Long.valueOf(req.getParameter("id"));
+        userService.delete(id);
+        List<UserDto> users = userService.findAll();
+        req.setAttribute("users", users);
         return "jsp/users.jsp";
     }
 }

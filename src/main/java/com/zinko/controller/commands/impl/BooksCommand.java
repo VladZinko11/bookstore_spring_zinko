@@ -1,19 +1,24 @@
 package com.zinko.controller.commands.impl;
 
+import com.zinko.controller.commands.Command;
 import com.zinko.service.BookService;
+import com.zinko.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
-@Controller("books")
-public class BooksCommand extends AbstractBookCommand {
+import java.util.List;
 
-    public BooksCommand(BookService bookService) {
-        super(bookService);
-    }
+@Controller("books")
+@RequiredArgsConstructor
+public class BooksCommand implements Command {
+
+    private final BookService bookService;
 
     @Override
     public String execute(HttpServletRequest req) {
-        req.setAttribute("books", bookService.findAll());
+        List<BookDto> books = bookService.findAll();
+        req.setAttribute("books", books);
         return "jsp/books.jsp";
     }
 }

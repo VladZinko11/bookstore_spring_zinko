@@ -1,18 +1,23 @@
 package com.zinko.controller.commands.impl;
 
+import com.zinko.controller.commands.Command;
 import com.zinko.service.BookService;
+import com.zinko.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller("book_edit_form")
-public class BookEditFormCommand extends AbstractBookCommand {
-    public BookEditFormCommand(BookService bookService) {
-        super(bookService);
-    }
+@RequiredArgsConstructor
+public class BookEditFormCommand implements Command {
+
+    private final BookService bookService;
 
     @Override
     public String execute(HttpServletRequest req) {
-        req.setAttribute("book", bookService.findById(Long.valueOf(req.getParameter("id"))));
+        Long id = Long.valueOf(req.getParameter("id"));
+        BookDto bookDto = bookService.findById(id);
+        req.setAttribute("book", bookDto);
         return "jsp/bookEdit.jsp";
     }
 }

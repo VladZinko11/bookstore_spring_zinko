@@ -1,19 +1,26 @@
 package com.zinko.controller.commands.impl;
 
+import com.zinko.controller.commands.Command;
 import com.zinko.service.BookService;
+import com.zinko.service.dto.BookDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller("book_delete")
-public class BookDeleteCommand extends AbstractBookCommand{
-    public BookDeleteCommand(BookService bookService) {
-        super(bookService);
-    }
+@RequiredArgsConstructor
+public class BookDeleteCommand implements Command {
+
+    private final BookService bookService;
 
     @Override
     public String execute(HttpServletRequest req) {
-        bookService.delete(Long.valueOf(req.getParameter("id")));
-        req.setAttribute("books", bookService.findAll());
+        Long id = Long.valueOf(req.getParameter("id"));
+        bookService.delete(id);
+        List<BookDto> books = bookService.findAll();
+        req.setAttribute("books", books);
         return "jsp/books.jsp";
     }
 }

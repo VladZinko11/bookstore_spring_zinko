@@ -1,6 +1,5 @@
 package com.zinko.data.entity;
 
-import com.zinko.data.entity.enums.Status;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -8,6 +7,7 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+
 @Entity
 @Table(name = "orders")
 @EqualsAndHashCode
@@ -44,32 +44,28 @@ public class Order {
         this.deleted = deleted;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public Long getId() {
         return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<OrderItem> getOrderItems() {
         return this.orderItems;
     }
 
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     public User getUser() {
         return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public BigDecimal getCost() {
@@ -77,11 +73,15 @@ public class Order {
         orderItems.stream()
                 .map(OrderItem::getPrice)
                 .filter(Objects::nonNull)
-                .forEach(price->cost = cost.add(price));
+                .forEach(price -> cost = cost.add(price));
         return cost;
     }
 
     public Status getStatus() {
         return this.status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
