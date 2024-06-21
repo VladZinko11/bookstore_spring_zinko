@@ -1,11 +1,9 @@
-package com.zinko.service.dto;
+package com.zinko.service.dto.userDto;
 
 import com.zinko.data.entity.Role;
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class UserDto {
 
     private Long id;
@@ -14,6 +12,4 @@ public class UserDto {
     private String email;
     private String password;
     private Role role;
-
-
 }
