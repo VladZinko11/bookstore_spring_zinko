@@ -1,6 +1,7 @@
 package com.zinko.service;
 
-import com.zinko.service.dto.UserDto;
+import com.zinko.service.dto.userDto.UserCreateDto;
+import com.zinko.service.dto.userDto.UserDto;
 
 import java.util.List;
 
@@ -9,13 +10,13 @@ public interface UserService {
 
     UserDto findById(Long id);
 
-    void create(UserDto userDto);
+    UserDto create(UserCreateDto userDto);
 
-    void update(UserDto userDto);
+    UserDto update(UserDto userDto);
 
     void delete(Long id);
 
     UserDto login(String email, String password);
 
-    UserDto findByEmail(String email);
+
 }

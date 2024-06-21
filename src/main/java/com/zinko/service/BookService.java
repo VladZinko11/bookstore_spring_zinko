@@ -1,6 +1,7 @@
 package com.zinko.service;
 
-import com.zinko.service.dto.BookDto;
+import com.zinko.service.dto.bookDto.BookCreateDto;
+import com.zinko.service.dto.bookDto.BookDto;
 
 import java.util.List;
 
@@ -10,11 +11,10 @@ public interface BookService {
 
     List<BookDto> findAll();
 
-    void create(BookDto bookDto);
+    BookDto create(BookCreateDto bookDto);
 
-    void update(BookDto bookDto);
+    BookDto update(BookDto bookDto);
 
     void delete(Long id);
 
-    BookDto findByIsbn(String isbn);
 }
