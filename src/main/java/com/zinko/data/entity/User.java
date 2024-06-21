@@ -25,10 +25,10 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
+    @Column(name = "role", columnDefinition = "varchar(255) default 'CUSTOMER'")
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.CUSTOMER;
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted = false;
 }

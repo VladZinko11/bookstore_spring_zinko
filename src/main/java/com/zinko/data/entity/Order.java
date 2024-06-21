@@ -19,21 +19,21 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Transient
+    @Column(name = "cost")
     private BigDecimal cost;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private Status status = Status.ISSUED;
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted = false;
 
     public Boolean getDeleted() {
@@ -70,11 +70,14 @@ public class Order {
 
     public BigDecimal getCost() {
         cost = new BigDecimal(0);
-        orderItems.stream()
-                .map(OrderItem::getPrice)
-                .filter(Objects::nonNull)
-                .forEach(price -> cost = cost.add(price));
-        return cost;
+        if (orderItems != null) {
+            orderItems.stream()
+                    .map(OrderItem::getPrice)
+                    .filter(Objects::nonNull)
+                    .forEach(price -> cost = cost.add(price));
+            return cost;
+        }
+        return null;
     }
 
     public Status getStatus() {

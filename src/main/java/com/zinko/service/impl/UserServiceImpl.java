@@ -2,12 +2,13 @@ package com.zinko.service.impl;
 
 import com.zinko.data.entity.User;
 import com.zinko.data.repository.UserRepository;
-import com.zinko.exception.EmptyRepositoryException;
-import com.zinko.exception.FailedLoginException;
-import com.zinko.exception.InvalidIndexException;
-import com.zinko.exception.OccupiedElementException;
 import com.zinko.service.UserService;
-import com.zinko.service.dto.UserDto;
+import com.zinko.service.dto.userDto.UserCreateDto;
+import com.zinko.service.dto.userDto.UserDto;
+import com.zinko.service.exception.EmptyRepositoryException;
+import com.zinko.service.exception.FailedLoginException;
+import com.zinko.service.exception.InvalidIndexException;
+import com.zinko.service.exception.OccupiedElementException;
 import com.zinko.service.serviceMapper.ServiceMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAll() {
         log.debug("UserService method findAll call");
         List<UserDto> list = userRepository.findAll().stream()
-                .map(serviceMapper::toDto)
+                .map(serviceMapper::toUserDtoFromUser)
                 .toList();
         if (list.isEmpty()) {
             throw new EmptyRepositoryException("No registered users");
@@ -43,15 +44,17 @@ public class UserServiceImpl implements UserService {
         log.debug("UserService method findById call with id: {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new InvalidIndexException("User with id: " + id + " not exist"));
-        return serviceMapper.toDto(user);
+        return serviceMapper.toUserDtoFromUser(user);
     }
 
     @Transactional
     @Override
-    public void create(UserDto userDto) {
-        log.debug("UserService method create call {}", userDto);
+    public UserDto create(UserCreateDto userCreateDto) {
+        log.debug("UserService method create call {}", userCreateDto);
+        UserDto userDto = serviceMapper.toUserDtoFromUserCreateDto(userCreateDto);
         emailValidate(userDto);
-        userRepository.save(serviceMapper.toUser(userDto));
+        User user = userRepository.save(serviceMapper.toUserFromUserDto(userDto));
+        return serviceMapper.toUserDtoFromUser(user);
     }
 
     private void emailValidate(UserDto userDto) {
@@ -67,10 +70,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void update(UserDto userDto) {
+    public UserDto update(UserDto userDto) {
         log.debug("UserService method update call {}", userDto);
         emailValidate(userDto);
-        userRepository.save(serviceMapper.toUser(userDto));
+        userRepository.save(serviceMapper.toUserFromUserDto(userDto));
+        return userDto;
     }
 
     @Override
@@ -89,14 +93,6 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(password)) {
             throw new FailedLoginException("Wrong password");
         }
-        return serviceMapper.toDto(user);
-    }
-
-    @Override
-    public UserDto findByEmail(String email) {
-        log.debug("UserService method findByEmail call with email {}", email);
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new InvalidIndexException("Not found user with email: " + email));
-        return serviceMapper.toDto(user);
+        return serviceMapper.toUserDtoFromUser(user);
     }
 }

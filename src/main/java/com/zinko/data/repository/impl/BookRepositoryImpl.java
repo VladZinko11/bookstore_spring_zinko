@@ -21,12 +21,13 @@ public class BookRepositoryImpl implements BookRepository {
     private EntityManager manager;
 
     @Override
-    public void save(Book entity) {
+    public Book save(Book entity) {
         if (entity.getId() != null) {
             manager.merge(entity);
         } else {
             manager.persist(entity);
         }
+        return entity;
     }
 
     @Override
@@ -46,10 +47,9 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Optional<Book> findBookByIsbn(String isbn) {
         try {
-            Optional<Book> optionalBook = Optional.ofNullable(manager.createQuery(SELECT_BY_ISBN, Book.class)
+            return Optional.ofNullable(manager.createQuery(SELECT_BY_ISBN, Book.class)
                     .setParameter("isbn", isbn)
                     .getSingleResult());
-            return optionalBook;
         } catch (NoResultException e) {
             return Optional.empty();
         }

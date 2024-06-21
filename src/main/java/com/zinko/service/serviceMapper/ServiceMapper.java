@@ -4,22 +4,34 @@ import com.zinko.data.entity.Book;
 import com.zinko.data.entity.Order;
 import com.zinko.data.entity.OrderItem;
 import com.zinko.data.entity.User;
-import com.zinko.service.dto.BookDto;
-import com.zinko.service.dto.OrderDto;
-import com.zinko.service.dto.OrderItemDto;
-import com.zinko.service.dto.UserDto;
+import com.zinko.service.dto.OrderDto.OrderDto;
+import com.zinko.service.dto.OrderDto.OrderGetAllDto;
+import com.zinko.service.dto.OrderDto.OrderItemDto;
+import com.zinko.service.dto.bookDto.BookCreateDto;
+import com.zinko.service.dto.bookDto.BookDto;
+import com.zinko.service.dto.userDto.UserCreateDto;
+import com.zinko.service.dto.userDto.UserDto;
 
 public interface ServiceMapper {
-    BookDto toDto(Book book);
+    BookDto toBookDtoFromBook(Book book);
 
-    Book toBook(BookDto bookDto);
+    Book toBookFromBookDto(BookDto bookDto);
 
-    UserDto toDto(User user);
+    UserDto toUserDtoFromUser(User user);
 
-    User toUser(UserDto userDto);
+    User toUserFromUserDto(UserDto userDto);
 
-    OrderDto toDto(Order order);
+    OrderDto toOrderDtoFromOrder(Order order);
 
-    OrderItemDto toDto(OrderItem orderItem);
+    OrderItemDto toOrderItemDtoFromOrderItem(OrderItem orderItem);
 
+    UserDto toUserDtoFromUserCreateDto(UserCreateDto userCreateDto);
+
+    BookDto toBookDtoFromBookCreateDto(BookCreateDto bookCreateDto);
+
+    OrderGetAllDto toOrderGetAllDtoFromOrder(Order order);
+
+    Order toOrderFromOrderDto(OrderDto orderDto);
+
+    OrderItem toOrderItemFromOrderItemDto(OrderItemDto orderItemDto);
 }
