@@ -9,7 +9,7 @@ public interface CrudRepository<T, K> {
 
     List<T> findAll();
 
-    void save(T entity);
+    T save(T entity);
 
     boolean delete(K key);
 }
