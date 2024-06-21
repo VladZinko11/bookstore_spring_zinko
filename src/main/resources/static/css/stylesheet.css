@@ -67,6 +67,14 @@ a.table_list_row:hover {
     padding: 14px 16px;
     text-decoration: none;
 }
+.nav-bar-b {
+    float: right;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
 
 .error {
     display: grid;
@@ -105,5 +113,12 @@ a.table_list_row:hover {
     margin-left: 80%;
     font-size: 30px;
     text-align: left;
-
+}
+.button-link {
+    background-color: #f44336;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
 }
