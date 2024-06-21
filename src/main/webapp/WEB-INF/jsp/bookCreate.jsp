@@ -6,7 +6,7 @@
     <title>Title</title>
 </head>
 <body>
-<form method="post" action="/controller?command=book_create">
+<form method="post" action="/books/create">
   <p>
     <input type="text" name="author" placeholder="author" required>
   </p>
@@ -17,7 +17,7 @@
     <input type="text" name="isbn" placeholder="isbn" required>
   </p>
   <p>
-    <input type="date" name="publication_date" required>
+    <input type="date" name="publicationDate" required>
   </p>
   <p>
     <input type="number" name="price" placeholder="price" required>

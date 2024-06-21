@@ -3,10 +3,10 @@
 <%@include file="navBar.jsp"%>
 <html>
 <head>
-    <title>Title</title>
+    <title>UserCreate</title>
 </head>
 <body>
-<form method="post" action="/controller?command=user_create">
+<form method="post" action="/users/create">
 <p>
   <input type="email" name="email" placeholder="email@com" required>
 </p>

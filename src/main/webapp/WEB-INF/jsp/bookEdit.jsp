@@ -6,7 +6,7 @@
     <title>Title</title>
 </head>
 <body>
-<form method="post" action="/controller?command=book_edit">
+<form method="post" action="/books/edit">
   <p>
     <input type="text" name="author" value="${book.author}" placeholder="author" required>
   </p>
@@ -17,7 +17,7 @@
     <input type="text" name="isbn" value="${book.isbn}" placeholder="isbn" required>
   </p>
   <p>
-    <input type="date" value="${book.publicationDate.toString()}" name="publication_date" required>
+    <input type="date" value="${book.publicationDate.toString()}" name="publicationDate" required>
   </p>
   <p>
     <input type="number" value="${book.price}" name="price" placeholder="price" required>

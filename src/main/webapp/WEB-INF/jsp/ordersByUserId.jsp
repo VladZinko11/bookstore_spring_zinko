@@ -3,7 +3,7 @@
 <%@include file="navBar.jsp" %>
 <html>
 <head>
-    <link rel="stylesheet" href="css/stylesheet.css">
+    <link rel="stylesheet" href="/css/stylesheet.css">
     <title>Title</title>
 </head>
 <body>
@@ -18,7 +18,7 @@
         </div>
         <div class="table_list_row"><br/></div>
         <c:forEach var="order" items="${orders}" varStatus="counter">
-            <a href="/controller?command=order&&id=${order.id}" methods="get" class="table_list_row">
+            <a href="/orders/${order.id}" methods="get" class="table_list_row">
                 <div class="table_list_cell">${counter.count}</div>
                 <div class="table_list_cell">${order.id}</div>
                 <div class="table_list_cell">

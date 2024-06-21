@@ -3,7 +3,7 @@
 <%@include file="navBar.jsp" %>
 <html>
 <head>
-    <link rel="stylesheet" href="css/stylesheet.css">
+    <link rel="stylesheet" href="/css/stylesheet.css">
     <title>Title</title>
 </head>
 <body>

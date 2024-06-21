@@ -6,7 +6,7 @@
     <title>Title</title>
 </head>
 <body>
-<form method="post" action="/controller?command=user_edit">
+<form method="post" action="/users/edit">
   <p>
     <input type="text" name="firstName" value="${user.firstName}" placeholder="first name" required>
   </p>
