@@ -24,14 +24,14 @@ public class OrderItem {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Transient
+    @Column(name = "price")
     private BigDecimal price;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted = false;
 
     public Boolean getDeleted() {

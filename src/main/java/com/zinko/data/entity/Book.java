@@ -29,7 +29,7 @@ public class Book {
     @Column(name = "publication_date")
     private LocalDate publicationDate = LocalDate.now();
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "boolean default false")
     private Boolean deleted = false;
 
     @Column(name = "price")
