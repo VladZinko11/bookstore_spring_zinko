@@ -2,10 +2,14 @@ package com.zinko.web.controller;
 
 import com.zinko.service.UserService;
 import com.zinko.service.dto.userDto.UserDto;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -21,6 +25,13 @@ public class UserController {
         UserDto user = userService.findById(id);
         model.addAttribute("user", user);
         return "user";
+    }
+
+    @GetMapping("/account")
+    public String getAccount(HttpSession session) {
+        UserDto userDto = (UserDto) session.getAttribute("user");
+        Long id = userDto.getId();
+        return "redirect:/users/" + id;
     }
 
     @GetMapping("/all")
