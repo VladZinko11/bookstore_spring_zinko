@@ -4,11 +4,11 @@ import com.zinko.data.entity.Book;
 import com.zinko.data.entity.Order;
 import com.zinko.data.entity.OrderItem;
 import com.zinko.data.entity.User;
-import com.zinko.service.dto.OrderDto.OrderDto;
-import com.zinko.service.dto.OrderDto.OrderGetAllDto;
-import com.zinko.service.dto.OrderDto.OrderItemDto;
 import com.zinko.service.dto.bookDto.BookCreateDto;
 import com.zinko.service.dto.bookDto.BookDto;
+import com.zinko.service.dto.order.OrderDto;
+import com.zinko.service.dto.order.OrderGetAllDto;
+import com.zinko.service.dto.order.OrderItemDto;
 import com.zinko.service.dto.userDto.UserCreateDto;
 import com.zinko.service.dto.userDto.UserDto;
 

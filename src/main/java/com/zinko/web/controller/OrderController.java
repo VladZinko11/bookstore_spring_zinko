@@ -3,8 +3,8 @@ package com.zinko.web.controller;
 import com.zinko.data.entity.Status;
 import com.zinko.service.BookService;
 import com.zinko.service.OrderService;
-import com.zinko.service.dto.OrderDto.OrderDto;
-import com.zinko.service.dto.OrderDto.OrderGetAllDto;
+import com.zinko.service.dto.order.OrderDto;
+import com.zinko.service.dto.order.OrderGetAllDto;
 import com.zinko.service.dto.userDto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -79,32 +79,32 @@ public class OrderController {
         return "orderUpdate";
     }
 
-    @GetMapping("/basket")
-    public String basket(@SessionAttribute("user") UserDto user, Model model) {
-        OrderDto basket = orderService.getBasket(user);
-        model.addAttribute("order", basket);
-        return "basket";
+    @GetMapping("/cart")
+    public String cart(@SessionAttribute("user") UserDto user, Model model) {
+        OrderDto cart = orderService.getCart(user);
+        model.addAttribute("order", cart);
+        return "cart";
     }
 
-    @PostMapping("/basket/add_book/{id}")
+    @PostMapping("/cart/add_book/{id}")
     public String addBook(@SessionAttribute("user") UserDto user, @PathVariable("id") Long id) {
-        OrderDto basket = orderService.getBasket(user);
-        orderService.addBook(basket, bookService.findById(id));
-        return "redirect: /orders/basket";
+        OrderDto cart = orderService.getCart(user);
+        orderService.addBook(cart, bookService.findById(id));
+        return "redirect: /orders/cart";
     }
 
-    @PostMapping("/basket/delete_book/{id}")
+    @PostMapping("/cart/delete_book/{id}")
     public String deleteBook(@SessionAttribute("user") UserDto user, @PathVariable("id") Long id) {
-        OrderDto basket = orderService.getBasket(user);
-        orderService.deleteBook(basket, bookService.findById(id));
-        return "redirect: /orders/basket";
+        OrderDto cart = orderService.getCart(user);
+        orderService.deleteBook(cart, bookService.findById(id));
+        return "redirect: /orders/cart";
     }
 
-    @PostMapping("/basket/checkout")
+    @PostMapping("/cart/checkout")
     public String checkout(@SessionAttribute("user") UserDto user) {
-        OrderDto basket = orderService.getBasket(user);
-        basket.setStatus(Status.PROCESSED);
-        orderService.update(basket);
+        OrderDto cart = orderService.getCart(user);
+        cart.setStatus(Status.PROCESSED);
+        orderService.update(cart);
         return "redirect: /orders/my_orders";
     }
 

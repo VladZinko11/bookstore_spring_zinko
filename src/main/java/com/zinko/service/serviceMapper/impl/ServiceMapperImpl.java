@@ -4,11 +4,11 @@ import com.zinko.data.entity.Book;
 import com.zinko.data.entity.Order;
 import com.zinko.data.entity.OrderItem;
 import com.zinko.data.entity.User;
-import com.zinko.service.dto.OrderDto.OrderDto;
-import com.zinko.service.dto.OrderDto.OrderGetAllDto;
-import com.zinko.service.dto.OrderDto.OrderItemDto;
 import com.zinko.service.dto.bookDto.BookCreateDto;
 import com.zinko.service.dto.bookDto.BookDto;
+import com.zinko.service.dto.order.OrderDto;
+import com.zinko.service.dto.order.OrderGetAllDto;
+import com.zinko.service.dto.order.OrderItemDto;
 import com.zinko.service.dto.userDto.UserCreateDto;
 import com.zinko.service.dto.userDto.UserDto;
 import com.zinko.service.serviceMapper.ServiceMapper;
@@ -83,6 +83,7 @@ public class ServiceMapperImpl implements ServiceMapper {
     @Override
     public OrderItemDto toOrderItemDtoFromOrderItem(OrderItem orderItem) {
         OrderItemDto orderItemDto = new OrderItemDto();
+        orderItemDto.setId(orderItem.getId());
         orderItemDto.setBookDto(toBookDtoFromBook(orderItem.getBook()));
         orderItemDto.setPrice(orderItem.getPrice());
         orderItemDto.setQuantity(orderItem.getQuantity());
@@ -127,6 +128,7 @@ public class ServiceMapperImpl implements ServiceMapper {
                     .map(this::toOrderItemFromOrderItemDto)
                     .toList());
         }
+        order.setCost(orderDto.getCost());
         order.setStatus(orderDto.getStatus());
         return order;
     }
@@ -134,8 +136,10 @@ public class ServiceMapperImpl implements ServiceMapper {
     @Override
     public OrderItem toOrderItemFromOrderItemDto(OrderItemDto orderItemDto) {
         OrderItem orderItem = new OrderItem();
+        orderItem.setId(orderItem.getId());
         orderItem.setBook(toBookFromBookDto(orderItemDto.getBookDto()));
         orderItem.setQuantity(orderItemDto.getQuantity());
+        orderItem.setPrice(orderItemDto.getPrice());
         return orderItem;
     }
 
