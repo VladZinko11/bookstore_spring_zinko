@@ -3,21 +3,25 @@
     width: 60%;
     margin-left: 20%;
     margin-top: 50px;
-    }
+}
+
 .table_list_row {
     display: table-row;
     text-decoration: none;
     transition: all 1s ease;
 }
+
 a.table_list_row:active,
 a.table_list_row:visited {
     text-decoration: none;
     color: #000000;
 }
+
 a.table_list_row:hover {
     background-color: lightslategray;
     color: aliceblue;
 }
+
 .table_list_cell {
     display: table-cell;
     color: black;
@@ -29,10 +33,12 @@ a.table_list_row:hover {
     margin-top: 100px;
     margin-left: 100px;
 }
+
 .book_name {
     color: black;
     font-size: 40px;
 }
+
 .book_isbn,
 .book_date {
     font-size: 30px;
@@ -45,9 +51,11 @@ a.table_list_row:hover {
     color: black;
     font-size: 30px;
 }
+
 .user_name {
     font-size: 50px;
 }
+
 .user_email {
     color: royalblue;
 }
@@ -59,6 +67,7 @@ a.table_list_row:hover {
     overflow: hidden;
     background-color: #333;
 }
+
 .nav-bar-a {
     float: left;
     display: block;
@@ -67,6 +76,7 @@ a.table_list_row:hover {
     padding: 14px 16px;
     text-decoration: none;
 }
+
 .nav-bar-b {
     float: right;
     display: block;
@@ -82,16 +92,20 @@ a.table_list_row:hover {
     width: 60%;
     margin-left: 20%;
 }
+
 .error_status {
     font-size: 200px;
 }
+
 .main_page {
     background: url('/images/img.png');
     background-size: cover;
 }
+
 .order {
     font-size: 25px;
 }
+
 .order_owner {
     display: grid;
     width: 60%;
@@ -100,6 +114,7 @@ a.table_list_row:hover {
     margin-top: 30px;
     font-size: 40px;
 }
+
 .order_cost {
     display: grid;
     width: 20%;
@@ -107,13 +122,15 @@ a.table_list_row:hover {
     font-size: 30px;
     text-align: left;
 }
-.order_status{
+
+.order_status {
     display: grid;
     width: 20%;
     margin-left: 80%;
     font-size: 30px;
     text-align: left;
 }
+
 .button-link {
     background-color: #f44336;
     color: white;
@@ -121,4 +138,8 @@ a.table_list_row:hover {
     text-align: center;
     text-decoration: none;
     display: inline-block;
+}
+
+.input_email {
+    text-transform: lowercase;
 }
