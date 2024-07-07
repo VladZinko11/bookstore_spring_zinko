@@ -2,17 +2,15 @@ package com.zinko;
 
 
 import com.zinko.web.interceptor.LogInterceptor;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.TransactionManager;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -22,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan
 @EnableTransactionManagement
 @RequiredArgsConstructor
-public class AppContext extends WebMvcConfigurationSupport {
+public class MvcContext extends WebMvcConfigurationSupport {
 
     private final LogInterceptor logInterceptor;
 
@@ -49,13 +47,9 @@ public class AppContext extends WebMvcConfigurationSupport {
                 .order(1);
     }
 
-    @Bean
-    public EntityManagerFactory entityManagerFactory() {
-        return Persistence.createEntityManagerFactory("psql");
-    }
-
-    @Bean
-    public TransactionManager transactionManager(EntityManagerFactory factory) {
-        return new JpaTransactionManager(factory);
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/non-access").setStatusCode(HttpStatus.NOT_ACCEPTABLE).setViewName("error");
     }
 }
