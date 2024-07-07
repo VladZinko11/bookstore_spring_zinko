@@ -18,15 +18,19 @@
             <div class="table_list_cell">${book.publicationDate.getYear()}</div>
             <div class="table_list_cell">${book.price}$</div>
         </a>
-        <form method="get" action="/books/edit/${book.id}">
-            <input type="submit" value="edit">
-        </form>
-        <form method="post" action="/books/delete/${book.id}">
-            <input type="submit" value="delete">
-        </form>
-        <form method="post" action="/orders/basket/add_book/${book.id}">
-            <input type="submit" value="add book">
-        </form>
+        <c:if test="${sessionScope.get(\"user\")!=null}">
+            <form method="post" action="/orders/cart/add_book/${book.id}">
+                <input type="submit" value="add book">
+            </form>
+            <c:if test="${sessionScope.get(\"user\").getRole().toString()==\"ADMIN\"}">
+                <form method="get" action="/books/edit/${book.id}">
+                    <input type="submit" value="edit">
+                </form>
+                <form method="post" action="/books/delete/${book.id}">
+                    <input type="submit" value="delete">
+                </form>
+            </c:if>
+        </c:if>
         <br/>
     </c:forEach>
 </div>

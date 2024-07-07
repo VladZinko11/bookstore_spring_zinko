@@ -4,7 +4,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="/css/stylesheet.css">
-    <title>Basket</title>
+    <title>Cart</title>
 </head>
 <body>
 <div class="order">
@@ -26,10 +26,10 @@
                 </div>
                 <div class="table_list_cell">${orderItem.quantity}</div>
                 <div class="table_list_cell">${orderItem.price}$</div>
-                <form method="post" action="/orders/basket/add_book/${orderItem.bookDto.id}">
+                <form method="post" action="/orders/cart/add_book/${orderItem.bookDto.id}">
                     <input type="submit" value="add book">
                 </form>
-                <form method="post" action="/orders/basket/delete_book/${orderItem.bookDto.id}">
+                <form method="post" action="/orders/cart/delete_book/${orderItem.bookDto.id}">
                     <input type="submit" value="delete book">
                 </form>
             </div>
@@ -39,7 +39,7 @@
     <div class="order_cost ">order cost: ${order.cost}$</div>
     <div class="order_status">status: ${order.status.toString()}</div>
     <div>
-        <form method="post" action="/orders/basket/checkout">
+        <form method="post" action="/orders/cart/checkout">
             <input type="submit" value="checkout">
         </form>
     </div>

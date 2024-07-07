@@ -23,6 +23,7 @@
                 <div class="table_list_cell">${order.id}</div>
                 <div class="table_list_cell">${order.userDto.firstName} ${order.userDto.lastName}</div>
                 <div class="table_list_cell">${order.status}</div>
+                <div class="table_list_cell">${order.cost}</div>
             </a>
         </c:forEach>
     </div>

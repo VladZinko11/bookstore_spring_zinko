@@ -24,9 +24,9 @@
                 <div class="table_list_cell">
                     <c:forEach var="orderItem" items="${order.orderItemsDto}">
                         <div>
-                            ${orderItem.bookDto.author}<br/>
-                            ${orderItem.bookDto.title}<br/>
-                            ${orderItem.bookDto.isbn}<br/>
+                                ${orderItem.bookDto.author}<br/>
+                                ${orderItem.bookDto.title}<br/>
+                                ${orderItem.bookDto.isbn}<br/>
                             quantity: ${orderItem.quantity}<br/>
                         </div>
                         <div><br/></div>
