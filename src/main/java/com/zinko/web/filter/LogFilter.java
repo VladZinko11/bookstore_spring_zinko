@@ -16,6 +16,6 @@ public class LogFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         log.debug(req.getMethod() + " " + req.getRequestURI());
-        super.doFilter(req, res, chain);
+        chain.doFilter(req, res);
     }
 }

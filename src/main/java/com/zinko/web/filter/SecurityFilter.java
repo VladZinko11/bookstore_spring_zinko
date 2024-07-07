@@ -10,29 +10,28 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Slf4j
 public class SecurityFilter extends HttpFilter {
 
+    List<String> unsupportedUri = List.of("/users/all", "/users/delete/", "/books/create", "/books/delete/", "/books/edit/", "/books/edit", "/orders/all", "/orders/delete", "orders/user_id", "orders/create", "orders/update/");
+
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         UserDto user = (UserDto) req.getSession().getAttribute("user");
-
-        if (!(user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.MANAGER))) {
-            List<String> unsupportedUri = new ArrayList<>(List.of("/users/all", "/users/delete/", "/books/create", "/books/delete/", "/books/edit/", "/books/edit", "/orders/all", "/orders/delete", "orders/user_id", "orders/create", "orders/update/"));
-            for (String uri :
-                    unsupportedUri) {
-                if (req.getRequestURI().contains(uri)) {
-                    req.getRequestDispatcher("/non-access").forward(req, res);
-                    return;
+        if (user != null) {
+            if (!(user.getRole().equals(Role.ADMIN) || user.getRole().equals(Role.MANAGER))) {
+                for (String uri :
+                        unsupportedUri) {
+                    if (req.getRequestURI().contains(uri)) {
+                        req.getRequestDispatcher("/non-access").forward(req, res);
+                        return;
+                    }
                 }
             }
-            req.getRequestDispatcher(req.getRequestURI()).forward(req, res);
-        } else {
-            super.doFilter(req, res, chain);
         }
+        chain.doFilter(req, res);
     }
 }
