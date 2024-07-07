@@ -24,7 +24,7 @@ CREATE TABLE orders
 (
     id      BIGSERIAL PRIMARY KEY,
     user_id BIGINT REFERENCES users,
-    status  VARCHAR(255) check (status in ('BASKET', 'ISSUED', 'PROCESSED', 'DELIVERED')),
+    status  VARCHAR(255) check (status in ('CART', 'ISSUED', 'PROCESSED', 'DELIVERED')),
     deleted BOOLEAN NOT NULL DEFAULT FALSE,
     cost    NUMERIC(5, 2)
 );
@@ -140,4 +140,30 @@ VALUES ((SELECT id FROM books WHERE isbn = '978-5-389-17021-6'), 20, 1, (SELECT 
        ((SELECT id FROM books WHERE isbn = '978-5-04-118763-7'), 20, 1, (SELECT price FROM books WHERE isbn = '978-5-04-118763-7') *20),
        ((SELECT id FROM books WHERE isbn = '978-5-17-123459-1'), 20, 2, (SELECT price FROM books WHERE isbn = '978-5-17-123459-1') *20),
        ((SELECT id FROM books WHERE isbn = '978-5-8475-1359-3'), 20, 3, (SELECT price FROM books WHERE isbn = '978-5-8475-1359-3') *20),
-       ((SELECT id FROM books WHERE isbn = '978-5-04-185900-8'), 20, 4, (SELECT price FROM books WHERE isbn = '978-5-04-185900-8')*20 )
+       ((SELECT id FROM books WHERE isbn = '978-5-04-185900-8'), 20, 4, (SELECT price FROM books WHERE isbn = '978-5-04-185900-8')*20 );
+
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=1) WHERE id=1;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=2) WHERE id=2;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=3) WHERE id=3;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=4) WHERE id=4;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=5) WHERE id=5;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=6) WHERE id=6;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=7) WHERE id=7;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=8) WHERE id=8;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=9) WHERE id=9;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=10) WHERE id=10;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=11) WHERE id=11;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=12) WHERE id=12;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=13) WHERE id=13;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=14) WHERE id=14;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=15) WHERE id=15;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=16) WHERE id=16;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=17) WHERE id=17;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=18) WHERE id=18;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=19) WHERE id=19;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=20) WHERE id=20;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=21) WHERE id=21;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=22) WHERE id=22;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=23) WHERE id=23;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=24) WHERE id=24;
+UPDATE orders SET cost=(SELECT SUM(price) FROM order_items WHERE order_id=25) WHERE id=25;
