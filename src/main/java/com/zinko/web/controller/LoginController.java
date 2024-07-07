@@ -16,8 +16,6 @@ public class LoginController {
 
     private final UserService userService;
 
-    //(@SessionAttribute User user)
-
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -27,7 +25,6 @@ public class LoginController {
     public String login(@RequestParam("email") String email, @RequestParam("password") String password, HttpSession session) {
         UserDto user = userService.login(email, password);
         session.setAttribute("user", user);
-        session.setAttribute("role", user.getRole().toString());
         return "index";
     }
 
