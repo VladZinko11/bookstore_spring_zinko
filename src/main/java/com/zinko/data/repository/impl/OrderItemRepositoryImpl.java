@@ -50,17 +50,14 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
         if (orderItem == null) {
             return false;
         }
-        orderItem.setDeleted(true);
+        manager.remove(orderItem);
         return true;
     }
 
     @Override
-    public List<Optional<OrderItem>> findByOrder(Order order) {
-        List<OrderItem> list = manager.createQuery(SELECT_BY_ORDER, OrderItem.class)
+    public List<OrderItem> findByOrder(Order order) {
+        return manager.createQuery(SELECT_BY_ORDER, OrderItem.class)
                 .setParameter("order", order)
                 .getResultList();
-        return list.stream()
-                .map(Optional::ofNullable)
-                .toList();
     }
 }

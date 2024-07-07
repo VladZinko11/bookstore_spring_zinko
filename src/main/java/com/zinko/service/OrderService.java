@@ -1,8 +1,8 @@
 package com.zinko.service;
 
-import com.zinko.service.dto.OrderDto.OrderDto;
-import com.zinko.service.dto.OrderDto.OrderGetAllDto;
 import com.zinko.service.dto.bookDto.BookDto;
+import com.zinko.service.dto.order.OrderDto;
+import com.zinko.service.dto.order.OrderGetAllDto;
 import com.zinko.service.dto.userDto.UserDto;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public interface OrderService {
 
     void delete(Long id);
 
-    OrderDto getBasket(UserDto userDto);
+    OrderDto getCart(UserDto userDto);
 
     void addBook(OrderDto basket, BookDto bookDto);
 
