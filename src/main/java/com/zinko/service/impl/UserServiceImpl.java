@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class UserServiceImpl implements UserService {
         log.debug("UserService method findAll call");
         List<UserDto> list = userRepository.findAll().stream()
                 .map(serviceMapper::toUserDtoFromUser)
+                .sorted(Comparator.comparingLong(UserDto::getId))
                 .toList();
         if (list.isEmpty()) {
             throw new EmptyRepositoryException("No registered users");
@@ -86,11 +88,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto login(String email, String password) {
-        log.debug("UserService method login call with email {} and password {}", email, password);
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new FailedLoginException("Not found user with email: " + email));
-        if (!user.getPassword().equals(password)) {
+    public UserDto login(UserDto userDto) {
+        log.debug("UserService method login call with email {} and password {}", userDto.getEmail(), userDto.getPassword());
+        User user = userRepository.findByEmail(userDto.getEmail())
+                .orElseThrow(() -> new FailedLoginException("Not found user with email: " + userDto.getEmail()));
+        if (!user.getPassword().equals(userDto.getPassword())) {
             throw new FailedLoginException("Wrong password");
         }
         return serviceMapper.toUserDtoFromUser(user);
